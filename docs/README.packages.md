@@ -1,4 +1,3 @@
-
 indice
 
 [Imagen](imagen)
@@ -14,7 +13,7 @@ Imagen
 Development
 ===========
 
-
+Map db vistas para gambas: https://gitlab.com/venenux/vnxdbmap
 translate shell: https://www.soimort.org/translate-shell/
 
 Games
