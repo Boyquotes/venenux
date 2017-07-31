@@ -1,8 +1,15 @@
-indice
+VenenuX 0.X
 
 [Imagen](imagen)
 [Development](development)
 [Games](games)
+
+VenenuX 1.0
+
+[Audio professional](audio-professional)
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
 
 Imagen
 ======
@@ -33,3 +40,16 @@ https://launchpad.net/~samoilov-lex/+archive/ubuntu/retrogames
 * mupen64plus : in debian repos and venenux repos
 * cen64: https://cen64.com/ cen64 and cen64chooltail
 
+
+VENENUX 1.0
+=============
+
+Audio professional
+==================
+
+(lucid = jeesie, trusty = strech)
+deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/libs/ubuntu lucid main
+deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/music/ubuntu lucid main
+deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/plugins/ubuntu lucid main
+deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/apps/ubuntu lucid main
+deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/kxstudio/ubuntu lucid main
