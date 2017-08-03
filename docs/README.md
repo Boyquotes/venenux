@@ -9,5 +9,7 @@ VenenuX GNU Linux
 - [ ] build and track disc of the current repository for future
 - [ ] upload to sf the disc's of the 0.x series
 
-docs/README.md
-[docs/README.packages.md](docs/README.packages.md)
+[README.packages.md](README.packages.md) : set de paquetes que se deben considerar
+
+**NOTA:** no es simplemente incluirlo porque sea liviano o sea rapido, las dependencia no deben ser en algo interpretado que cambie si api, ejemplo python no pero perl si.
+**NOTE:** is not simply include it because it is light or fast, dependencies should not be a interpreted languaje that changes its api, eg: python not but perl yes.

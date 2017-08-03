@@ -1,8 +1,8 @@
+# Paquetes incluir y/o empaquetar para versiones 
+
 VenenuX 0.X
 
-[Imagen](imagen)
-[Development](development)
-[Games](games)
+- [Imagen](imagen) - [Development](development) - [Games](games)
 
 VenenuX 1.0
 
@@ -10,6 +10,21 @@ VenenuX 1.0
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------
+Listado a considerar para VenenuX serie 0.X
+============================================
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+Console
+=======
+
+* monitor energia : https://packages.debian.org/search?keywords=yacpi
+
+Desktop openbox-lxde
+====================
+
+* manejador/monitor energia https://packages.debian.org/wheezy/fdpowermon (GTK3 el que puede apagar, pero super liviano)
+
+
 
 Imagen
 ======
@@ -40,9 +55,21 @@ https://launchpad.net/~samoilov-lex/+archive/ubuntu/retrogames
 * mupen64plus : in debian repos and venenux repos
 * cen64: https://cen64.com/ cen64 and cen64chooltail
 
+--------------------------------------------------------------------------------------------------------------------------------------------
+Listado paquetes a considerar para VENENUX 1.0
+==============================================
+--------------------------------------------------------------------------------------------------------------------------------------------
 
-VENENUX 1.0
-=============
+Console
+=======
+
+* monitor energia : https://packages.debian.org/search?keywords=yacpi
+
+Desktop openbox-lxde
+====================
+
+* manejador/monitor energia https://packages.debian.org/wheezy/fdpowermon (GTK3 el que puede apagar, pero super liviano)
+
 
 Audio professional
 ==================
