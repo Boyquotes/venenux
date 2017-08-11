@@ -65,6 +65,10 @@ Console
 
 * monitor energia : https://packages.debian.org/search?keywords=yacpi
 
+Desktop openbox-lxqt
+====================
+* control center https://github.com/DidierSpaier/qControlCenter en qt4 probar en distro vieja
+
 Desktop openbox-lxde
 ====================
 
