@@ -1,3 +1,10 @@
+
+## link para realizar pinning y poner unos repos por encima de otros
+
+* http://www.argon.org/~roderick/apt-pinning.html
+
+## links para obviar gpg viejas en apt
+
 * https://serverfault.com/questions/114667/where-to-still-find-a-debian-4-0-etch-iso
 * https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=322714
 * https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=740795
