@@ -14,42 +14,47 @@ Listado a considerar para VenenuX serie 0.X
 ============================================
 --------------------------------------------------------------------------------------------------------------------------------------------
 
-Console
-=======
+### Console
 
 * monitor energia : https://packages.debian.org/search?keywords=yacpi
 
-Desktop openbox-lxde
-====================
+### Desktop openbox-lxde
 
 * manejador/monitor energia https://packages.debian.org/wheezy/fdpowermon (GTK3 el que puede apagar, pero super liviano)
 
 
 
-Imagen
-======
+### Imagen
 
 * mypaint 0.9 o 1.2 https://launchpad.net/~achadwick/+archive/ubuntu/mypaint-testing?field.series_filter=trusty esta disponible en debian tambien
 * GIMP (opcional) solo para el DVD
 
-Development
-===========
+### Development
 
+hugo : 
+golang 1.8
+gitea
+gogs
+subversion
+rapidsvn
+gitggle
+sqlitemanager
+mysqlworkbench solo 5.X
+meld
 Map db vistas para gambas: https://gitlab.com/venenux/vnxdbmap
 translate shell: https://www.soimort.org/translate-shell/
 
-Games
-======
+### Games
 
-### linuxgames
+#### linuxgames
 
-#### older games
+##### older games
 
 https://launchpad.net/~samoilov-lex/+archive/ubuntu/retrogames
 
-### emulators
+#### emulators
 
-#### Nintendo64
+##### Nintendo64
 
 * mupen64 http://gitlab.com/venenux/mupen64
 * mupen64plus : in debian repos and venenux repos
@@ -60,23 +65,20 @@ Listado paquetes a considerar para VENENUX 1.0
 ==============================================
 --------------------------------------------------------------------------------------------------------------------------------------------
 
-Console
-=======
+### Console
 
 * monitor energia : https://packages.debian.org/search?keywords=yacpi
 
-Desktop openbox-lxqt
-====================
+### Desktop openbox-lxqt
+
 * control center https://github.com/DidierSpaier/qControlCenter en qt4 probar en distro vieja
 
-Desktop openbox-lxde
-====================
+### Desktop openbox-lxde
 
 * manejador/monitor energia https://packages.debian.org/wheezy/fdpowermon (GTK3 el que puede apagar, pero super liviano)
 
 
-Audio professional
-==================
+### Audio professional
 
 (lucid = jeesie, trusty = strech)
 deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/libs/ubuntu lucid main
