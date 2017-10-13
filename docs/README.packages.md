@@ -17,6 +17,10 @@ Listado a considerar para VenenuX serie 0.X
 ### Console
 
 * monitor energia : https://packages.debian.org/search?keywords=yacpi
+* figlet
+* cowsay
+* jp2a
+* -presentty-
 
 ### Desktop openbox-lxde
 
@@ -70,6 +74,10 @@ Listado paquetes a considerar para VENENUX 1.0
 ### Console
 
 * monitor energia : https://packages.debian.org/search?keywords=yacpi
+* presentty
+* figlet
+* cowsay
+* jp2a
 
 ### Desktop openbox-lxqt
 
