@@ -22,7 +22,9 @@ Listado a considerar para VenenuX serie 0.X
 
 * manejador/monitor energia https://packages.debian.org/wheezy/fdpowermon (GTK3 el que puede apagar, pero super liviano)
 
+### red y cuidado
 
+* nany https://launchpad.net/ubuntu/+archive/primary/+files/nanny_2.31.1-0ubuntu4.dsc
 
 ### Imagen
 
