@@ -16,6 +16,7 @@ Listado a considerar para VenenuX serie 0.X
 
 ### Console
 
+* mrename
 * monitor energia : https://packages.debian.org/search?keywords=yacpi
 * figlet
 * cowsay
@@ -25,6 +26,7 @@ Listado a considerar para VenenuX serie 0.X
 ### Desktop openbox-lxde
 
 * manejador/monitor energia https://packages.debian.org/wheezy/fdpowermon (GTK3 el que puede apagar, pero super liviano)
+* gprename
 
 ### red y cuidado
 
