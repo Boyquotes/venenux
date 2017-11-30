@@ -22,6 +22,7 @@ Listado a considerar para VenenuX serie 0.X
 * cowsay
 * jp2a
 * -presentty-
+* buscar equivalente a asciinema
 
 ### Desktop openbox-lxde
 
@@ -80,6 +81,7 @@ Listado paquetes a considerar para VENENUX 1.0
 * figlet
 * cowsay
 * jp2a
+* asciinema : https://packages.debian.org/search?searchon=sourcenames&keywords=asciinema graba la consola, importante
 
 ### Desktop openbox-lxqt
 
