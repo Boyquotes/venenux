@@ -57,6 +57,8 @@ translate shell: https://www.soimort.org/translate-shell/
 
 #### linuxgames
 
+https://packages.debian.org/source/jessie/gnubg entre los de inteligencia
+
 ##### older games
 
 https://launchpad.net/~samoilov-lex/+archive/ubuntu/retrogames
@@ -100,3 +102,8 @@ deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/music/ubuntu luci
 deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/plugins/ubuntu lucid main
 deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/apps/ubuntu lucid main
 deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/kxstudio/ubuntu lucid main
+
+### juegos
+
+https://packages.debian.org/source/jessie/gnubg entre los de inteligencia
+
