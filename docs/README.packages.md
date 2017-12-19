@@ -105,5 +105,7 @@ deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/kxstudio/ubuntu l
 
 ### juegos
 
-https://packages.debian.org/source/jessie/gnubg entre los de inteligencia
+* https://packages.debian.org/source/jessie/gnubg entre los de inteligencia
+* http://google.github.io/liquidfun/Building/html/md__building_linux.html
+* https://github.com/erincatto/Box2D/issues/387#issuecomment-330359489 comparar con box2d debian
 
