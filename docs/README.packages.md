@@ -24,6 +24,13 @@ Listado a considerar para VenenuX serie 0.X
 * -presentty-
 * buscar equivalente a asciinema
 
+### internet
+
+surf
+netsurf
+palemoon-sse
+firefox-16
+
 ### Desktop openbox-lxde
 
 * manejador/monitor energia https://packages.debian.org/wheezy/fdpowermon (GTK3 el que puede apagar, pero super liviano)
@@ -84,6 +91,12 @@ Listado paquetes a considerar para VENENUX 1.0
 * cowsay
 * jp2a
 * asciinema : https://packages.debian.org/search?searchon=sourcenames&keywords=asciinema graba la consola, importante
+
+### internet
+
+surf
+netsurf
+palemoon
 
 ### Desktop openbox-lxqt
 
