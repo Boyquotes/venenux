@@ -30,6 +30,7 @@ surf
 netsurf
 palemoon-sse
 firefox-16
+https://packages.debian.org/search?searchon=names&keywords=xombrero
 
 ### Desktop openbox-lxde
 
@@ -97,6 +98,7 @@ Listado paquetes a considerar para VENENUX 1.0
 surf
 netsurf
 palemoon
+https://packages.debian.org/search?searchon=names&keywords=xombrero
 
 ### Desktop openbox-lxqt
 
