@@ -36,6 +36,7 @@ https://packages.debian.org/search?searchon=names&keywords=xombrero
 
 * manejador/monitor energia https://packages.debian.org/wheezy/fdpowermon (GTK3 el que puede apagar, pero super liviano)
 * gprename
+* https://github.com/nowrep/notify-desktop
 
 ### red y cuidado
 
@@ -105,6 +106,7 @@ https://packages.debian.org/search?searchon=names&keywords=xombrero
 ### Desktop openbox-lxqt
 
 * control center https://github.com/DidierSpaier/qControlCenter en qt4 probar en distro vieja
+* https://github.com/nowrep/notify-desktop
 
 ### Desktop openbox-lxde
 
