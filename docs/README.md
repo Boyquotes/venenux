@@ -9,6 +9,9 @@ VenenuX GNU Linux
 - [ ] build and track disc of the current repository for future
 - [ ] upload to sf the disc's of the 0.x series
 
+Este live build hace hibrit iso a mano, sirve para lenny y squeeze
+https://l3net.wordpress.com/2013/09/21/how-to-build-a-debian-livecd/
+
 [README.packages.md](README.packages.md) : set de paquetes que se deben considerar
 
 **NOTA:** no es simplemente incluirlo porque sea liviano o sea rapido, las dependencia no deben ser en algo interpretado que cambie si api, ejemplo python no pero perl si.
