@@ -230,3 +230,31 @@ la creacion del archivo squasfs y copia del chroot ademas de paquetes base
 para el cd root fs
 
 una ves listo se tiene un resultado ISO que sirve tambien para pendrive
+
+## Modificar el trabajo actual sin perder lo realizado
+
+PAra modificar el trabajo realizado no es necesario esperar descargar todo los paquetes de nuevo.. 
+solo hay que limpiar la parte binarya, y se conservara el trabajo:
+
+`lb clean --binary`
+
+y despues normal `lb build` y esta vez si prosigue usando lo ya realizado
+
+## Error y se para el trabajo lb build con binary, pero ya tenemos chroot fino
+
+si ocurre un error en tiempo de "build" y se intenta retomar, la compilacion del iso no ocurre:
+
+``` bash
+P: Begin building binary iso image...
+mv: no se puede efectuar `stat' sobre «binary»: No existe el fichero o el directorio
+P: Begin unmounting filesystems...
+P: Saving caches...
+```
+
+esto es un bug y se resulte segun esto: https://lists.debian.org/debian-live/2014/08/msg00047.html borrando manualmente, 
+
+`rm -rf chroot/binary`
+`lb clean --binary`
+
+y despues normal `lb build` y esta vez si prosigue
+
