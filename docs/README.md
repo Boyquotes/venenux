@@ -9,6 +9,9 @@ VenenuX GNU Linux
 - [ ] build and track disc of the current repository for future
 - [ ] upload to sf the disc's of the 0.x series
 
+Este no emplea el live.build sino cdebootstrp, sirve para squeeze, y wheeze
+https://yunohost.org/#/create_live_usb
+
 Este live build hace hibrit iso a mano, sirve para lenny y squeeze
 https://l3net.wordpress.com/2013/09/21/how-to-build-a-debian-livecd/
 
