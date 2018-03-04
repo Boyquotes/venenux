@@ -129,3 +129,6 @@ deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/kxstudio/ubuntu l
 * http://google.github.io/liquidfun/Building/html/md__building_linux.html
 * https://github.com/erincatto/Box2D/issues/387#issuecomment-330359489 comparar con box2d debian
 
+### desarrollo
+
+* https://code.launchpad.net/~paolorotolo/+archive/ubuntu/android-studio?field.series_filter=
