@@ -41,6 +41,7 @@ https://packages.debian.org/search?searchon=names&keywords=xombrero
 ### red y cuidado
 
 * nany https://launchpad.net/ubuntu/+archive/primary/+files/nanny_2.31.1-0ubuntu4.dsc
+* http://angryip.org/download/#linux
 
 ### Imagen
 
@@ -102,6 +103,7 @@ surf
 netsurf
 palemoon
 https://packages.debian.org/search?searchon=names&keywords=xombrero
+http://angryip.org/download/#linux
 
 ### Desktop openbox-lxqt
 
