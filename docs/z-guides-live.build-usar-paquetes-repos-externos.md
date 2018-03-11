@@ -1,4 +1,3 @@
-
 # Como usar palemoon con live-build
 
 Identificar un repo, que tenga paquetes, aqui uan lista pero **se usara el primero:**
@@ -9,7 +8,7 @@ Identificar un repo, que tenga paquetes, aqui uan lista pero **se usara el prime
 #### adicionar el repo:
 
 ``` bash
-echo 'deb http://download.opensuse.org/repositories/home:/stevenpusser/Debian_Testing/ /' > config/archives/palemoon.list.chroot
+echo 'deb http://download.opensuse.org/repositories/home:/vegnuli/Debian_8.0/ /' > config/archives/palemoon.list.chroot
 ```
 
 
