@@ -1,6 +1,18 @@
 VenenuX GNU Linux
 =================
 
+Wellcome to the venenux documentation, this are mantained at the gitlab interface; 
+take in consideration that the main documentation are in spanish, some are in english..
+currently at the 2018-01 it's a WIP, but a lot of material are at the vegnuli mail list, 
+so please visit the forum at https://groups.google.com/forum/m/#!forum/venenuxsarisari
+
+Bienvenido a la documentacion venenux, esta es mantenida desde interfaz de gitlab;
+tome en consideracion que la documentacion pincipal es en español, algunas en ingles..
+actualmente al 2018-01 es un trabajo en progreso, pero mucho del material esta en las listas, 
+por favor visita el foro en https://groups.google.com/forum/m/#!forum/venenuxsarisari
+
+# TODO:
+
 - [X] Fix and restart the older webpage: venenux.net/venenux.needthis.net
 - [ ] fix and update the restarted webpage: http://venenux.sourceforge.io
 - [ ] set new admin password based on old seed in intranet
