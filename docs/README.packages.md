@@ -9,6 +9,8 @@ VenenuX 1.0
 [Audio professional](audio-professional)
 
 
+investigar parl-desktop
+
 --------------------------------------------------------------------------------------------------------------------------------------------
 Listado a considerar para VenenuX serie 0.X
 ============================================
@@ -23,6 +25,7 @@ Listado a considerar para VenenuX serie 0.X
 * jp2a
 * -presentty-
 * buscar equivalente a asciinema
+* mlocate
 
 ### internet
 
@@ -96,6 +99,7 @@ Listado paquetes a considerar para VENENUX 1.0
 * cowsay
 * jp2a
 * asciinema : https://packages.debian.org/search?searchon=sourcenames&keywords=asciinema graba la consola, importante
+* mlocate
 
 ### internet
 
