@@ -11,6 +11,12 @@ tome en consideracion que la documentacion pincipal es en español, algunas en i
 actualmente al 2018-01 es un trabajo en progreso, pero mucho del material esta en las listas, 
 por favor visita el foro en https://groups.google.com/forum/m/#!forum/venenuxsarisari
 
+## List of documentation usefull guides
+
+* [VNXDOCS-DISC-clone-partition-partclone](VNXDOCS-DISC-clone-partition-partclone.md) clonar w32/w64 os con partclone.
+* [VNXDOCS-DISC-clone-partition-ntfsclone](VNXDOCS-DISC-clone-partition-ntfsclone.md) clonar w32/w16 os con ntfsclone.
+* [VNXDOCS-DISC-clone-partition-partimage](VNXDOCS-DISC-clone-partition-partimage.md) clonar cualquier os con partimage.
+
 # TODO:
 
 - [X] Fix and restart the older webpage: venenux.net/venenux.needthis.net

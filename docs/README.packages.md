@@ -138,3 +138,8 @@ deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/kxstudio/ubuntu l
 ### desarrollo
 
 * https://code.launchpad.net/~paolorotolo/+archive/ubuntu/android-studio?field.series_filter=
+
+## Forense y rescate
+
+* partclone, partimage
+* partclone-utils
