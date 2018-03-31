@@ -236,3 +236,4 @@ los archivos estaran en solo lectura. La imagen RAW siempre es del tamanio de la
 
 * [VNXDOCS-DISC-clone-partition-partclone.md](VNXDOCS-DISC-clone-partition-partclone.md)
 * [VNXDOCS-DISC-clone-partition-partimage.md](VNXDOCS-DISC-clone-partition-partimage.md)
+* http://edoceo.com/exemplar/ntfsclone-transfer-windows
