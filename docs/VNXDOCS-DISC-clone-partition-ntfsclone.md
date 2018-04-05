@@ -91,7 +91,7 @@ siempre la particion destino sea distinta y el disco no este dañado.
 
 **NOTAS** la restauracion usando ntfsclone debe ser tamanios de particiones exacta iguales
 
-##### CLONAR EL DISK PARTITION INFO
+##### CLONAR EL DISK PARTITION INFO TABLE
 
 `sfdisk -d /dev/sda > /media/externo/ntfsclone-w32-c0013.ntfs.ptab`
 
@@ -99,6 +99,20 @@ La informacion de la imagen no arrancara en la nueva maquina
 si no esta en la posicion de particonamiento exactamente igual a la de la particoin origen.
 
 Por ello se realiza un backup con sfdisk de la informacion de la particion.
+
+y para restaurarlos:
+
+`sfdisk /dev/sda < /media/externo/ntfsclone-w32-c0013.ntfs.ptab`
+
+OJO NO RESTAURAR DISCOS DISTINTOS! cuando es tabla de particiones deben ser iguales!
+
+##### CLONAR EL MBR 
+
+`dd if=/dev/sda of=/media/externo/ntfsclone-w32-c0013.ntfs.mbr count=1 bs=512`
+
+y la restauracion es:
+
+`dd if=/media/externo/ntfsclone-w32-c0013.ntfs.mbr of=/dev/sdb`
 
 
 # Restaurar una imagen w32 o w64 desde el archivo imagen
