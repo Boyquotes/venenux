@@ -12,6 +12,20 @@ La mejor fuente de información es de los chicos de Kali Linux. Ellos proporcion
 Los scripts utilizados para generar estas imágenes ya envejecieron, y son inservibles, pero están disponibles en Github 
 solo si navegas en el historial. Que proporcionan una excelente base para preparar una debian por su cuenta.
 
+## Caracteristicas comunes:
+
+Procesador: casi siempre un Dual-Core @ 1.7Ghz ARM
+Memoria: entre 2GB DDR3L y 8GB
+Disco: 16GB eMMC SSD
+Pantalla: siemrpe 11.6" / 1366x768
+Red: WiFi 802.11 a/b/g/n (Dual Band)
+Video: VGA (dongle) con HDMI siempre
+USB: 1x USB 3.0 / 1x USB 2.0
+Tarjetas: SD/SDHC/SDXC
+Sonido: JAck 2mm microfono/audifono mixto
+
+Solo las canaimitas son X86, toda la gamma tablet y telefono de androit es ARM
+
 ## Developer Mode y Verificacion
 
 El primero para tomar el control de la Chromebook es cambiar a modo de desarrollador.
