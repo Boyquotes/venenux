@@ -1,4 +1,3 @@
-
 ## Introducción
 
 El principal problema con ChromeOS es que todos los servicios de **google están perfectamente integradas**, 
@@ -56,4 +55,11 @@ Estas porquerias de google son Linux y si pulsas TAB en el inicio mostrara el er
 2. si no, presiona CRTL+D en la pantalla y si vuelve preguntar "To turn OS Verification OFF", enter
 
 De aqui en adelante igual que el paso numero 5 (cinco).
+
+# Fuentes
+
+https://wiki.debian.org/InstallingDebianOn/Samsung/ARMChromebook
+https://www.neowin.net/forum/topic/1173005-replacing-chrome-os-with-debian-jessie-on-the-samsung-series-3-chromebook/
+https://blog.pgeiser.com/posts/2018/02/installing-debian-stretch-on-an-arm-chromebook-xe303c12/#
+
 
