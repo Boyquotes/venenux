@@ -36,15 +36,15 @@ soportan ARM, y no las instale dualboot, porque el bios es un problema.
 
 ## Caracteristicas comunes:
 
-Procesador: siempre un 2 nucleos @ 1.7Ghz (ARM o Intel)
-Memoria: entre 2GB DDR3L y 8GB
-Disco: 16GB eMMC SSD o 32GB eMMC SSD
-Pantalla: siemrpe 11.6" / 1366x768 a 2024x1024
-Red: WiFi 802.11 a/b/g/n (Dual Band)
-Video: VGA (dongle) con HDMI siempre
-USB: 1x USB 3.0 / 1x USB 2.0 en las nuevas USB-c
-Tarjetas: SD/SDHC/SDXC
-Sonido: JAck 2mm microfono/audifono mixto en las nuevas se eliminara
+* Procesador: siempre un 2 nucleos @ 1.7Ghz (ARM o Intel)
+* Memoria: entre 2GB DDR3L y 8GB
+* Disco: 16GB eMMC SSD o 32GB eMMC SSD
+* Pantalla: siemrpe 11.6" / 1366x768 a 2024x1024
+* Red: WiFi 802.11 a/b/g/n (Dual Band)
+* Video: VGA (dongle) con HDMI siempre
+* USB: 1x USB 3.0 / 1x USB 2.0 en las nuevas USB-c
+* Tarjetas: SD/SDHC/SDXC
+* Sonido: JAck 2mm microfono/audifono mixto en las nuevas se eliminara
 
 ## Developer Mode y Verificacion
 
@@ -68,6 +68,8 @@ esto durara de 10 a 15 minutos y borrara toda la data de su sesion (por favor "s
 6. Cuendo termine reiniciara nuevamente, y en cada reinicio mostrara la pantalla "OS Verification OFF" 
 esta pantalla se quita a los 30 segundos o presionando CRTL+D sobre ella
 
+https://www.chromium.org/chromium-os/poking-around-your-chrome-os-device#TOC-Putting-your-Chrome-OS-Device-into-Developer-Mode
+
 ## Developer Mode y USB BOOT
 
 Una vez que el desarrollador modo está habilitado, es posible habilitar el arranque por USB:
@@ -81,6 +83,8 @@ esto mostrara uan consola de Linux bash para hacer login.
 10. escriba "sudo su" esto le dara acceso de root, windoseros ignorantes no seguir aqui..
 11. ejecutar el comando `crossystem dev_boot_usb=1 dev_boot_signed_only=0`
 
+https://www.chromium.org/chromium-os/poking-around-your-chrome-os-device#TOC-Get-the-command-prompt-through-VT-2
+
 ## Error: mensaje insertar USB y nunca arranca
 
 Estas porquerias de google son Linux y si pulsas TAB en el inicio mostrara el error del kernel
@@ -90,14 +94,26 @@ Estas porquerias de google son Linux y si pulsas TAB en el inicio mostrara el er
 
 De aqui en adelante igual que el paso numero 5 (cinco).
 
-## Montar la raiz del systema ChromeOS iamgern para escritura rootfs
+## Montar la raiz del systema ChromeOS imagen para escritura rootfs
 
-A esto le llaman 
+A esto le llaman "root filesystem read-writable", otra vez en la consola o en el 
+vty con CRTL+ALT+"->" o en el "crosh" con CRTL+ALT+T sesion con chronos y sudo:
+
+`/usr/share/vboot/bin/make_dev_ssd.sh --remove_rootfs_verification`
+
+ESto previo modo developer y lo de verificacion de arranque signed desactivado 
+y con el arranque USB activado es para complementar.
+
+**IMPORTANTE** devolverlo a estado anterior al terminar de poner linux como sea.
+
+`sudo /usr/share/vboot/bin/make_dev_ssd.sh --noremove_rootfs_verification`
+
+https://www.chromium.org/chromium-os/poking-around-your-chrome-os-device#TOC-Making-changes-to-the-filesystem
 
 # Fuentes
 
-https://wiki.debian.org/InstallingDebianOn/Samsung/ARMChromebook
-https://www.neowin.net/forum/topic/1173005-replacing-chrome-os-with-debian-jessie-on-the-samsung-series-3-chromebook/
-https://blog.pgeiser.com/posts/2018/02/installing-debian-stretch-on-an-arm-chromebook-xe303c12/#
-https://github.com/dnschneid/crouton/wiki/Autostart-crouton-chroot-at-ChromeOS-startup
-https://wiki.galliumos.org/Hardware_Compatibility
+* https://wiki.debian.org/InstallingDebianOn/Samsung/ARMChromebook
+* https://www.neowin.net/forum/topic/1173005-replacing-chrome-os-with-debian-jessie-on-the-samsung-series-3-chromebook/
+* https://blog.pgeiser.com/posts/2018/02/installing-debian-stretch-on-an-arm-chromebook-xe303c12/#
+* https://github.com/dnschneid/crouton/wiki/Autostart-crouton-chroot-at-ChromeOS-startup
+* https://wiki.galliumos.org/Hardware_Compatibility
