@@ -101,6 +101,19 @@ vty con CRTL+ALT+"->" o en el "crosh" con CRTL+ALT+T sesion con chronos y sudo:
 
 `/usr/share/vboot/bin/make_dev_ssd.sh --remove_rootfs_verification`
 
+**ARM samsung chromebook 303** necesita especificar 2 o 4 puesto una es A y otra B:
+
+`/usr/share/vboot/bin/make_dev_ssd.sh --remove_rootfs_verification --partitions 2`
+
+y saldra esto, pues tiene dos pares de particiones con el sistema: 
+
+```
+make_dev_ssd.sh: INFO: Kernel A: Disabled rootfs verification.
+make_dev_ssd.sh: INFO: Backup of Kernel A is stored in: /mnt/stateful_partition/backups/kernel_A_20180411_105134.bin
+make_dev_ssd.sh: INFO: Kernel A: Re-signed with developer keys successfully.
+make_dev_ssd.sh: INFO: Successfully re-signed 1 of 1 kernel(s)  on device /dev/mmcblk0.
+```
+
 ESto previo modo developer y lo de verificacion de arranque signed desactivado 
 y con el arranque USB activado es para complementar.
 
@@ -112,6 +125,7 @@ https://www.chromium.org/chromium-os/poking-around-your-chrome-os-device#TOC-Mak
 
 # Fuentes
 
+https://groups.google.com/a/chromium.org/forum/#!topic/chromium-os-dev/ZcbP-33Smiw/discussion
 * https://wiki.debian.org/InstallingDebianOn/Samsung/ARMChromebook
 * https://www.neowin.net/forum/topic/1173005-replacing-chrome-os-with-debian-jessie-on-the-samsung-series-3-chromebook/
 * https://blog.pgeiser.com/posts/2018/02/installing-debian-stretch-on-an-arm-chromebook-xe303c12/#
