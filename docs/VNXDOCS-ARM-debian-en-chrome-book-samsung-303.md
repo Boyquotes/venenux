@@ -12,6 +12,28 @@ La mejor fuente de información es de los chicos de Kali Linux. Ellos proporcion
 Los scripts utilizados para generar estas imágenes ya envejecieron, y son inservibles, pero están disponibles en Github 
 solo si navegas en el historial. Que proporcionan una excelente base para preparar una debian por su cuenta.
 
+## Typos de Chromebooks
+
+HAy dos tipos segun la arquitectura:
+* ARM como las Samsung X303, que corren Exynos ARM, o las Acer que corren Rockchip
+* INtel que las hay super viejas que corren Atom y Celeron y las nuevas i7
+
+Entre las intel tenemos las **Broadwell** (que traen i7),
+y las **Bailtray** (Silvermont Atom), las escazas **Haswell-ULX**;
+estas **intel son las mejores, especialmente las Bailtray, Broadwell**, en estas  
+puede colocarse GalliumOS un windubuntu para estas que hasta arranca dual boot 
+pero ojo solo a las compatibles se les garantiza. Pero hay unas 
+muy nuevas **Pineview** y **Apollolake** en estas no se garantiza nada.
+
+Entre las arm tenemos las llamadas **Exynos**, las **Tegra** y las **RK** de Acer; 
+hay que tener en cuenta que estas **son las peores, y mas dificiles de 
+alterar**, si pretende cambir algo es mejor un crouton con Debian, 
+auqnue la mas recomendada es ARchlinux, lo que si es seguro 
+no correr las estupidas Winbuntu, Winsuse o Winhat, porque no 
+soportan ARM, y no las instale dualboot, porque el bios es un problema.
+
+**LA regla de oro basica es ARM->chroot/crounton, Intel/vieja->GalliumOS, Intel/nueva->chroot/GalliunOS**
+
 ## Caracteristicas comunes:
 
 Procesador: casi siempre un Dual-Core @ 1.7Ghz ARM
@@ -70,10 +92,14 @@ Estas porquerias de google son Linux y si pulsas TAB en el inicio mostrara el er
 
 De aqui en adelante igual que el paso numero 5 (cinco).
 
+## Montar la raiz del systema ChromeOS iamgern para escritura rootfs
+
+A esto le llaman 
+
 # Fuentes
 
 https://wiki.debian.org/InstallingDebianOn/Samsung/ARMChromebook
 https://www.neowin.net/forum/topic/1173005-replacing-chrome-os-with-debian-jessie-on-the-samsung-series-3-chromebook/
 https://blog.pgeiser.com/posts/2018/02/installing-debian-stretch-on-an-arm-chromebook-xe303c12/#
-
-
+https://github.com/dnschneid/crouton/wiki/Autostart-crouton-chroot-at-ChromeOS-startup
+https://wiki.galliumos.org/Hardware_Compatibility
