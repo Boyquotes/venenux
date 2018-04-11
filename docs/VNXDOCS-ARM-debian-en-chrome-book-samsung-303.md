@@ -36,17 +36,15 @@ soportan ARM, y no las instale dualboot, porque el bios es un problema.
 
 ## Caracteristicas comunes:
 
-Procesador: casi siempre un Dual-Core @ 1.7Ghz ARM
+Procesador: siempre un 2 nucleos @ 1.7Ghz (ARM o Intel)
 Memoria: entre 2GB DDR3L y 8GB
-Disco: 16GB eMMC SSD
-Pantalla: siemrpe 11.6" / 1366x768
+Disco: 16GB eMMC SSD o 32GB eMMC SSD
+Pantalla: siemrpe 11.6" / 1366x768 a 2024x1024
 Red: WiFi 802.11 a/b/g/n (Dual Band)
 Video: VGA (dongle) con HDMI siempre
-USB: 1x USB 3.0 / 1x USB 2.0
+USB: 1x USB 3.0 / 1x USB 2.0 en las nuevas USB-c
 Tarjetas: SD/SDHC/SDXC
-Sonido: JAck 2mm microfono/audifono mixto
-
-Solo las canaimitas son X86, toda la gamma tablet y telefono de androit es ARM
+Sonido: JAck 2mm microfono/audifono mixto en las nuevas se eliminara
 
 ## Developer Mode y Verificacion
 
