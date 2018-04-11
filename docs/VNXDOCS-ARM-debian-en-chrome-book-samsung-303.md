@@ -94,6 +94,27 @@ Estas porquerias de google son Linux y si pulsas TAB en el inicio mostrara el er
 
 De aqui en adelante igual que el paso numero 5 (cinco).
 
+## Esquema de particiones y sequencia arranque
+
+Aqui hay una caja negra pero hay vestigios de luz:
+
+Emplea U-BOOT que afortunadamente es opensource, se especializa en ARM:
+
+* al encender el CPU ejecuta U-BOOT desde el SPI flash de solo lectura embebida
+* u-boot revisa la GPT en la 16 GiB SSD eMMC y busca la particion FIRMWARE activa
+* encontrando la particion activa trata de arrancar la u-boot alli
+* u-boot revisa otra vez la GPT y busca el Linux kernel ROOT-KERNEL marcado
+* encontrado Linux kernel arranca desde su particion raiz, mas no la raiz sera!
+
+En la eMMC SSD de 16 GB originalmente hay dos de estas particiones:
+
+* dos FIRMWARE una ROOT-A en particion 3 y otra ROOT-B en la 5
+* dos KERNEL un KERNEL-A en particon 2 y otro KERNEL-B en particion 4
+
+El par 2-3 es el que aparentemente arranca, puesto en la 2 esta la que tiene U-BOOT. **POR VERIFICAR ESTA INFO**
+
+https://sites.google.com/a/chromium.org/dev/chromium-os/firmware-porting-guide/using-nv-u-boot-on-the-samsung-arm-chromebook
+
 ## Montar la raiz del systema ChromeOS imagen para escritura rootfs
 
 A esto le llaman "root filesystem read-writable", otra vez en la consola o en el 
