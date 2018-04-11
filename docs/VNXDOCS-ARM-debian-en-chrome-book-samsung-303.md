@@ -34,6 +34,8 @@ soportan ARM, y no las instale dualboot, porque el bios es un problema.
 
 **LA regla de oro basica es ARM->chroot/crounton, Intel/vieja->GalliumOS, Intel/nueva->chroot/GalliunOS**
 
+**IMPORTANTE** la mejor fuente de info es http://linux-exynos.org/wiki/Installing_a_rootfs para las ARM
+
 ## Caracteristicas comunes:
 
 * Procesador: siempre un 2 nucleos @ 1.7Ghz (ARM o Intel)
