@@ -115,6 +115,8 @@ El par 2-3 es el que aparentemente arranca, puesto en la 2 esta la que tiene U-B
 
 https://sites.google.com/a/chromium.org/dev/chromium-os/firmware-porting-guide/using-nv-u-boot-on-the-samsung-arm-chromebook
 
+https://forums.kali.org/showthread.php?27350-Chromebook-expand-resize-grow-partition-rootfs
+
 ## Montar la raiz del systema ChromeOS imagen para escritura rootfs
 
 A esto le llaman "root filesystem read-writable", otra vez en la consola o en el 
