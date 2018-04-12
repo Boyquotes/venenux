@@ -1,16 +1,15 @@
 ## Introducción
 
-El principal problema con ChromeOS es que todos los servicios de **google están perfectamente integradas**, 
-si **DEMASIADO tanto que sin eso no se instala nada!** para rematar, cuadno su tiempo de soporte termina 
-no les puedes instalar nada está alcanzando poco a poco el final de la vida (de julio de 2018, según google).
+El principal problema con ChromeOS es que **google está perfectamente integrado**, 
+si, **DEMASIADO google, tanto que sin eso no se instala nada!** para rematar, 
+cuadno su tiempo de soporte termina no les puedes instalar nada y muchas están 
+alcanzando poco a poco el final de la vida (de julio de 2018, para la 303 samsung).
 
-ESTOY EN CONTRA DE EL OBSOLESCENCIA asi que dado una persona del trabajo la necesitaba, y estamos en crisis aprendemos apreciar las cosas:
+ESTOY EN CONTRA DE EL OBSOLESCENCIA asi que dado una persona la necesitaba, 
+y estamos en crisis aprendemos apreciar las cosas:
 
-Yo traduje esto al español: https://blog.pgeiser.com/posts/2018/02/installing-debian-stretch-on-an-arm-chromebook-xe303c12/
-La mejor fuente de información es de los chicos de Kali Linux. Ellos proporcionan el BRAZO de imágenes para un montón de diferentes sistemas.
-
-Los scripts utilizados para generar estas imágenes ya envejecieron, y son inservibles, pero están disponibles en Github 
-solo si navegas en el historial. Que proporcionan una excelente base para preparar una debian por su cuenta.
+El linux que mejor soporta las ARM es Arch, despues gracias a Debian el Kali linux 
+esto porque Debian tiene ARM como arquitecturas soportada. Kali sin Debian no es nadie.
 
 ## Typos de Chromebooks
 
@@ -50,18 +49,19 @@ soportan ARM, y no las instale dualboot, porque el bios es un problema.
 
 ## Developer Mode y Verificacion
 
-El primero para tomar el control de la Chromebook es cambiar a modo de desarrollador.
-Este deshabilitar el núcleo de verificación de firmas y dejar ejecutar cualquier firmware 
-de la máquina con el inconveniente de tener en cada inicio de una molesta pantalla de advertencia...
-**IMPORTANTE** no pensar que la pantalla de advertencia es tener que reinstalar el chrome OS!
+Para tomar el control de la Chromebook es cambiar a **modo de desarrollador.**
+Este deshabilitar el núcleo de verificación de firmas y dejar ejecutar cualquier 
+firmware de la máquina con el inconveniente de tener en cada inicio de una 
+molesta pantalla de advertencia...
+**IMPORTANTE** no! la pantalla de advertencia NO ES reinstalar el chrome OS!
 
 1. En primer lugar, apague la máquina
-2. Despues deje presionado las teclas EXC+REFRESH y despues sin despresionar encender 
-con la tecla POWER, es decir las tres al mismo tiempo pero la de power de ultimo. 
-Esto sacara una imagen con un signo de exclamacion grande..
-3. En la pantalla de signo de exclamacion sale diciendo que debe recuperar el chrome OS 
-y algo de USB presione CTRL+D al mismo tiempo, y .... rapidamente...
-4. Sale pantalla en blanco con letras, diciendo algo de "Verification OFF .. enter" pulse ENTER 
+2. Despues presionando al mismo tiempo las teclas ESC+REFRESH o ESC+F3 y despues 
+sin despresionar encender con la tecla POWER, es decir las tres al mismo tiempo 
+pero la de power de ultimo. Esto saca una imagen con un signo de exclamacion grande.
+3. En la pantalla de signo de exclamacion dice que debe recuperar el chrome OS 
+y algo de USB, aqui presione CTRL+D al mismo tiempo, y .... rapidamente...
+4. Sale pantalla blanca con letras de "Verification OFF .. enter" y pulse ENTER 
 es decir confirme pulsando enter, que se apagara rapidamente y espere re_encienda....
 5. Al volver encender aparece una pantalla de advertencia "OS Verification OFF" y 
 despues de 30 segundos se escuchara dos pitidos, y a lo cual volvera reinicar ...
@@ -98,7 +98,7 @@ de "OS Verification OFF" arranque, dejela pasar Y NO PRESIONE SPACE
 alli es cuando pulsara CRTL+ALT+"->" o sino CTRL+ALT+F2 al mismo tiempo y 
 esto mostrara uan consola de Linux bash para hacer login.
 9. escriba "chronos" como nombre de usuario, esto lo iniciara login de consola
-10. escriba "sudo su" esto le dara acceso de root, windoseros ignorantes no seguir aqui..
+10. escriba "sudo su" esto le dara acceso de root, windoseros ignorantes no seguir
 11. ejecutar el comando `crossystem dev_boot_usb=1 dev_boot_signed_only=0`
 
 https://www.chromium.org/chromium-os/poking-around-your-chrome-os-device#TOC-Get-the-command-prompt-through-VT-2
@@ -108,7 +108,7 @@ https://www.chromium.org/chromium-os/poking-around-your-chrome-os-device#TOC-Get
 Estas porquerias de google son Linux y si pulsas TAB en el inicio mostrara el error del kernel
 
 1. si **revcovery_reason="0X54"** reintentar prender al menos 40 veces hasta que arranque.
-2. si no, presiona CRTL+D en la pantalla y si vuelve preguntar "To turn OS Verification OFF", enter
+2. si no, presiona CRTL+D en la pantalla y si vuelve preguntar "To turn OS Verification OFF"
 
 De aqui en adelante igual que el paso numero 5 (cinco).
 
@@ -166,6 +166,9 @@ https://www.chromium.org/chromium-os/poking-around-your-chrome-os-device#TOC-Mak
 
 # 1. Chroot y Crouton
 
+**Tener en cuenta que esto lo que hace es "sub"instalar debian** es decir 
+ejecutarlo detras de el ChromeOS, valiendose de como si una virtual fuera.
+
 Se deber tener ya listo:
 
 * [Developer Mode y USB boot](#developer-mode-y-usb-boot)
@@ -174,18 +177,47 @@ Se deber tener ya listo:
 
 ## Download and install crouton
 
-`cd /home/chronos/;curl -o crouton https://raw.githubusercontent.com/dnschneid/crouton/master/installer/crouton;sh crouton`
+`curl -o /home/chronos/crouton https://raw.githubusercontent.com/dnschneid/crouton/master/installer/crouton;sh crouton`
 
-Para instalar hay que ejecutarlo sin parametros, y este dira que descargara crouton, al terminar mostrara la ayuda.
+Para instalar hay que ejecutarlo sin parametros, y este dira que descargara 
+el script crouton, al terminar mostrara la ayuda.
 
-Lastimosamente requiere internet, para no usar de nuevo internet, el deja todo lo de installer
-en el directorio `/tmp/crouton-installer-cache/` 
+Lastimosamente requiere internet, para no usar de nuevo internet, el deja todo 
+lo de installer en el directorio `/tmp/crouton-installer-cache/` 
 
-Pero como este descargara todo de internet mover su contenido solo tendra sentido despues de instalado el chroot.
+Pero como este descargara todo de internet mover su contenido solo tendra 
+sentido despues de instalado el chroot.
 
 ## Instalaciones
 
-la t es cosas como que escritorio y que "set" de paquetes
+Vamos ir dejando todo independiente de internet, primero mover el verdadero instalador:
+
+`mv /tmp/crouton-installer-cache/crouton /home/chronos/crouton-installer`
+
+Aqui la t es cosas como que escritorio y que "set" de paquetes la r es distro 
+y n identificador de chroot:
+
+`sh crouton-installer -t core,audio,x11,lxde-desktop -r jessie -n venenux1`
+
+**NOTA** no siempre funciona en las Samsung si algo va mal: `sudo delete-chroot venenux1`
+
+Todo lo que hace crouton es al vuelo (descargado de internet), pero 
+despues se podra respaldar el chroot para no depender de internet.
+
+La instalacion sera en `/usr/local/chroots/venenux1` y en la consola empezara 
+salir cosas de debian, como si de un debian se tratase. TEner en cuenta que esto 
+lo que hace es "sub"instalar debian y ejecutarlo detras de el ChromeOS, 
+valiendose de como si una virtual fuera.
+
+https://github.com/dnschneid/crouton/wiki/Crouton-Command-Cheat-Sheet
+
+## Iniciar el escritorio
+
+create .xinitrc
+exec mate-session
+
+to start x (inside chroot): xinit
+startx doesn't work
 
 # Fuentes
 
