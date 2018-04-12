@@ -72,6 +72,22 @@ esta pantalla se quita a los 30 segundos o presionando CRTL+D sobre ella
 
 https://www.chromium.org/chromium-os/poking-around-your-chrome-os-device#TOC-Putting-your-Chrome-OS-Device-into-Developer-Mode
 
+## Consola VT vs Consola Crosh vs Real
+
+Las consolas solo estan activas despues de activar el modo desarrollador.
+
+La diferencia es que en la VT no influye o no vale todo lo que es grafico, 
+en la "crosh" variables de influencia de el entorno grafico estan disponibles 
+es por esta razon que la mayoria de los scripts se mandan ejecutar aqui.
+
+La **consola Crosh** es una consola limitada, se abre con CTRL+ALT+T y 
+aparece en uan pestaña del navegador. En esta consola para llegar a la 
+real hay que ejecutar al entrar el comando `bash` .
+
+La **consola real** esta realizando CTRL+ALT+"->" esta flecha es la flecha de 
+navegacion arriba y no la flecha de direccion, es la tecla de funcion F2 si 
+se ve de izquierda a derecha, esto es tambien hacer CTRL+ALT+F2 simultaneamente.
+
 ## Developer Mode y USB BOOT
 
 Una vez que el desarrollador modo está habilitado, es posible habilitar el arranque por USB:
@@ -119,7 +135,7 @@ https://sites.google.com/a/chromium.org/dev/chromium-os/firmware-porting-guide/u
 
 https://forums.kali.org/showthread.php?27350-Chromebook-expand-resize-grow-partition-rootfs
 
-## Montar la raiz del systema ChromeOS imagen para escritura rootfs
+## Montar la raiz del sistema ChromeOS imagen para escritura rootfs
 
 A esto le llaman "root filesystem read-writable", otra vez en la consola o en el 
 vty con CRTL+ALT+"->" o en el "crosh" con CRTL+ALT+T sesion con chronos y sudo:
@@ -147,6 +163,29 @@ y con el arranque USB activado es para complementar.
 `sudo /usr/share/vboot/bin/make_dev_ssd.sh --noremove_rootfs_verification`
 
 https://www.chromium.org/chromium-os/poking-around-your-chrome-os-device#TOC-Making-changes-to-the-filesystem
+
+# 1. Chroot y Crouton
+
+Se deber tener ya listo:
+
+* [Developer Mode y USB boot](#developer-mode-y-usb-boot)
+* [Developer Mode y Verificacion](#developer-mode-y-verificacion)
+* [Montar la raiz del systema chromeos imagen para escritura rootfs](#montar-la-raiz-del-sistema-chromeos-imagen-para-escritura-rootfs)
+
+## Download and install crouton
+
+`cd /home/chronos/;curl -o crouton https://raw.githubusercontent.com/dnschneid/crouton/master/installer/crouton;sh crouton`
+
+Para instalar hay que ejecutarlo sin parametros, y este dira que descargara crouton, al terminar mostrara la ayuda.
+
+Lastimosamente requiere internet, para no usar de nuevo internet, el deja todo lo de installer
+en el directorio `/tmp/crouton-installer-cache/` 
+
+Pero como este descargara todo de internet mover su contenido solo tendra sentido despues de instalado el chroot.
+
+## Instalaciones
+
+la t es cosas como que escritorio y que "set" de paquetes
 
 # Fuentes
 
