@@ -58,10 +58,12 @@ molesta pantalla de advertencia...
 1. En primer lugar, apague la máquina
 2. Despues presionando al mismo tiempo las teclas ESC+REFRESH o ESC+F3 y despues 
 sin despresionar encender con la tecla POWER, es decir las tres al mismo tiempo 
-pero la de power de ultimo. Esto saca una imagen con un signo de exclamacion grande.
-3. En la pantalla de signo de exclamacion dice que debe recuperar el chrome OS 
+pero la de power de ultimo. Esto saca una imagen con algo de "device inserted" 
+o sino una imagen con un signo de exclamacion grande. Si sale la primera solo 
+presionar CTRL+D y aparecera la imagen de signo de exclamacion
+3. Si sale la pantalla de signo de exclamacion dice que debe recuperar el chrome OS 
 y algo de USB, aqui presione CTRL+D al mismo tiempo, y .... rapidamente...
-4. Sale pantalla blanca con letras de "Verification OFF .. enter" y pulse ENTER 
+4. Si sale pantalla blanca con letras de "Verification OFF .. enter" y pulse ENTER 
 es decir confirme pulsando enter, que se apagara rapidamente y espere re_encienda....
 5. Al volver encender aparece una pantalla de advertencia "OS Verification OFF" y 
 despues de 30 segundos se escuchara dos pitidos, y a lo cual volvera reinicar ...
