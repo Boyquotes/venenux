@@ -82,9 +82,9 @@ La diferencia es que en la VT no influye o no vale todo lo que es grafico,
 en la "crosh" variables de influencia de el entorno grafico estan disponibles 
 es por esta razon que la mayoria de los scripts se mandan ejecutar aqui.
 
-La **consola Crosh** es una consola limitada, se abre con CTRL+ALT+T y 
-aparece en uan pestaña del navegador. En esta consola para llegar a la 
-real hay que ejecutar al entrar el comando `bash` .
+La **consola Crosh** es una consola limitada pero "favorecida" ya que es la 
+unica que se integra al entorno X, se abre con CTRL+ALT+T y aparece en una 
+pestaña del navegador. Hay que ejecutar al entrar el comando `shell` .
 
 La **consola real** esta realizando CTRL+ALT+"->" esta flecha es la flecha de 
 navegacion arriba y no la flecha de direccion, es la tecla de funcion F2 si 
