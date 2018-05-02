@@ -177,6 +177,20 @@ Se deber tener ya listo:
 * [Developer Mode y Verificacion](#developer-mode-y-verificacion)
 * [Montar la raiz del systema chromeos imagen para escritura rootfs](#montar-la-raiz-del-sistema-chromeos-imagen-para-escritura-rootfs)
 
+## USar un login no invitado
+
+Lastimosamente debe tener una cuenta gmail para el primer inicio y usarla, 
+**despues no necesita tener internet**.
+
+### Mecanismo de inicio
+
+El ChromeOS para la primera vez necesita uan cuenta google, una vez se inicia, 
+el sistema configura un usuario interno, con la calve del correo, y despues 
+usara esta clave para cada inicio de sesion corroborandola contra el correo, 
+ojo simepre offline, porque al verse online si encuentra discrepancias no iniciara.
+
+Esto es un problema mayor, dado depende de el correo casi al 100% y no se puede alterar.
+
 ## Download and install crouton
 
 `curl -o /home/chronos/crouton https://raw.githubusercontent.com/dnschneid/crouton/master/installer/crouton;sh crouton`
@@ -199,9 +213,11 @@ Vamos ir dejando todo independiente de internet, primero mover el verdadero inst
 Aqui la t es cosas como que escritorio y que "set" de paquetes la r es distro 
 y n identificador de chroot:
 
-`sh crouton-installer -t core,audio,x11,lxde-desktop -r jessie -n venenux1`
+`sh crouton-installer -t core,audio,x11,lxde-desktop -r wheeze -n venenux1`
 
 **NOTA** no siempre funciona en las Samsung si algo va mal: `sudo delete-chroot venenux1`
+
+Se utiliza "wheeze" por la compatibilidad entre el xorg y el binario Mali GPU.
 
 Todo lo que hace crouton es al vuelo (descargado de internet), pero 
 despues se podra respaldar el chroot para no depender de internet.
