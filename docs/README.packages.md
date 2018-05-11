@@ -69,6 +69,7 @@ translate shell: https://www.soimort.org/translate-shell/
 ### Games
 
 Stockfish, crafty, gnuchess
+minetest : https://build.opensuse.org/project/show/games
 
 #### linuxgames
 
@@ -134,6 +135,7 @@ deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/kxstudio/ubuntu l
 * https://packages.debian.org/source/jessie/gnubg entre los de inteligencia
 * http://google.github.io/liquidfun/Building/html/md__building_linux.html
 * https://github.com/erincatto/Box2D/issues/387#issuecomment-330359489 comparar con box2d debian
+* minetest : https://build.opensuse.org/project/show/games
 
 ### desarrollo
 
