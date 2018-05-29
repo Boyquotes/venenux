@@ -65,6 +65,7 @@ mysqlworkbench solo 5.X
 meld
 Map db vistas para gambas: https://gitlab.com/venenux/vnxdbmap
 translate shell: https://www.soimort.org/translate-shell/
+https://github.com/codebrainz/geany-zencoding
 
 ### Games
 
@@ -140,6 +141,7 @@ deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/kxstudio/ubuntu l
 ### desarrollo
 
 * https://code.launchpad.net/~paolorotolo/+archive/ubuntu/android-studio?field.series_filter=
+* https://github.com/codebrainz/geany-zencoding
 
 ## Forense y rescate
 
