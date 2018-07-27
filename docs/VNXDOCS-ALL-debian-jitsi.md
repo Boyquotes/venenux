@@ -16,8 +16,36 @@ La caracteristica del jitsi frente otros es que es facil de usar, se puede usar
 sin colocar usuarios y claves. 
 
 Claro esta se puede configurar apra que los exija. 
+# Server Jitsi
 
-# PARTE 1 - instalacion estandar sin cambios de optimizacion
+Lo que se conoce como **jitsi** es realmente un simple cliente GUI para chat, 
+se llama **jitsi-meet** un servicio de salas de conferencia y chat facil de usar
+que proporciona streaming son solo agregados a la parte de servicio de salas.
+
+# Introduccion y Jitsi-meet respecto xmpp y webserver
+
+El software jitsi comprende 5 componentes:
+* un cliente ("jitsi"), 
+* un servicio de chat web ("jitsi-meet") 
+* componetnes de streaming con audio/video ("jitsi-videobridge")
+* servicio de conferencia ("jicofo")
+* componente de integracion con telefonia ("jigasi")
+
+La caracteristica del jitsi frente otros es que es facil de usar, se puede usar 
+sin colocar usuarios y claves. 
+
+Claro esta se puede configurar para que los exija. 
+
+1. [Instalacion Estandar sin cambios de optimizacion](#parte-1-instalacion-estandar-sin-cambios-de-optimizacion)
+   * [Infraestructura simplificada](#infraestructura-simplificada)
+   * [Instalacion simple o unificada](#instalacion-simple-unificada)
+2. [Instalacion refinada y cambios de optimizacion](#parte-2-instalacion-refinada-y-cambios-de-optimizacion)
+   * [Infraestructura red/maquinas disgregada](#infraestructura-disgregada)
+   * [Instalacion distribuida o disgregada](#instalacion-distribuida)
+
+**IMPORTANTE** : recuerde que modificar este archivo implica modificar los titulos y sus indices de redireccion
+
+# PARTE 1 - Instalacion estandar sin cambios de optimizacion
 
 ## Requisitos
 
@@ -32,7 +60,7 @@ cambiar "10.101.10.99" por el fqdn del servidor que brindara los servicios.
 
 Se debe cambiar las referencias a los nombres de servidor aqui y la ip en cuestion.
 
-## Infraestructura
+## Infraestructura simplificada
 
 Aunque la configuracion es mayormente automatica (basada en el dominio), la automatizacion 
 asumira la siguiente configuracion de protocolos en la red (usando la cadena de 
@@ -76,7 +104,7 @@ la ip como dominio 10.101.10.99) se ilustra en el siguiente grafico.
                 |        |              |             |
                 +--------+              +-------------+
 ```
-## instalacion
+## Instalacion simple unificada
 
 ### Instalar paquetes preliminares
 
@@ -125,7 +153,7 @@ jitsi y todos sus componetne si se emplea el paquete preguntara por un nombre de
 y usando esto configurara el entorno completo para chat y videollamada, robando la raiz 
 del servidor web que este activo si no se ha especificado algun subdominio.
 
-## instalacion jitsi suite
+## Instalacion jitsi suite
 
 ### repositorio jitsi testing
 
@@ -165,17 +193,25 @@ En uan mauqina distinta usar el navegador y visitar `http://10.101.10.99`
 recuerde que interpretara el msimo dominio y la ip como misma cadena.
 
 
-## Enabling recording
+## Grabacion del streaming audio/video
+
+(WIP)
+
 [Jibri](https://github.com/jitsi/jibri)is a set of tools for recording and/or streaming a Jitsi Meet conference.
 
 
-# PARTE 2 - instalacion refinada y cambios de optimizacion
+# PARTE 2 - Instalacion refinada y cambios de optimizacion
 
 No hay mucho que optimizar mas que la calidad de el streaming que realiza y los parametros de conexcion.
 
 Encuanto a balanceo y distribucion si hay mas que hacer, montando solo parte de lso componentes en servidores aparte.
 
-## Infraestructura
+   * [Infraestructura red/maquinas disgregada](#infraestructura-disgregada)
+   * [Instalacion distribuida o disgregada](#instalacion-distribuida)
+
+**IMPORTANTE** : recuerde que modificar este archivo implica modificar los titulos y sus indices de redireccion.
+
+## Infraestructura disgregada
 
 Aunque la configuracion es mayormente automatica (basada en el dominio), la automatizacion 
 asumira la siguiente configuracion de protocolos en la red (usando la cadena de 
@@ -224,7 +260,7 @@ la ip como dominio 10.101.10.99) se ilustra en el siguiente grafico.
                                  +--------+
 ```
 
-## instalacion
+## Instalacion distribuida
 
 WIP 
 
