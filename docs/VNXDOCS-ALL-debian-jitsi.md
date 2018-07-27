@@ -56,7 +56,10 @@ Jitsi depende de un entorno Java y un servidor web puesto funciona principalment
 
 ## Infraestructura
 
-This is how the network looks:
+Aunque la configuracion es mayormente automatica (basada en el dominio), la automatizacion 
+asumira la siguiente configuracion de protocolos en la red (usando la cadena de la ip como dominio 10.101.10.99)
+se ilustra en el siguiente grafico:
+
 ```
                                  |
                +-----------------+----------------+
