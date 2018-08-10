@@ -88,6 +88,24 @@ https://launchpad.net/~samoilov-lex/+archive/ubuntu/retrogames
 * mupen64plus : in debian repos and venenux repos
 * cen64: https://cen64.com/ cen64 and cen64chooltail
 
+### multimedia
+
+### Audio professional
+
+(lucid = jeesie, trusty = strech)
+deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/libs/ubuntu lucid main
+deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/music/ubuntu lucid main
+deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/plugins/ubuntu lucid main
+deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/apps/ubuntu lucid main
+deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/kxstudio/ubuntu lucid main
+
+#### screenrecorders
+
+* byzanz : console recorder
+* Gifine : lua rocks and graphicpmagick based gif/mp4 recorder, depends on luarocks server
+* vokoscreen : qt4/qt5 desktop recorder based on ffmpeg (graba de camara, audio, mic, formato gif, liviano, interfaz no falla)
+* simplescreenrecorder : qt4/qt5 screenrecorder based on ffmpeg (seems very simple and recomended, not packaged)
+
 --------------------------------------------------------------------------------------------------------------------------------------------
 Listado paquetes a considerar para VENENUX 1.0
 ==============================================
@@ -121,6 +139,8 @@ http://angryip.org/download/#linux
 * manejador/monitor energia https://packages.debian.org/wheezy/fdpowermon (GTK3 el que puede apagar, pero super liviano)
 
 
+### multimedia
+
 ### Audio professional
 
 (lucid = jeesie, trusty = strech)
@@ -129,6 +149,19 @@ deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/music/ubuntu luci
 deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/plugins/ubuntu lucid main
 deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/apps/ubuntu lucid main
 deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/kxstudio/ubuntu lucid main
+
+#### screenrecorders
+
+* byzanz : console recorder
+* Gifine : lua rocks and graphicpmagick based gif/mp4 recorder, depends on luarocks server
+* pek : gtk3 with ffmpeg3 recorder for gif movies, light but high requirements
+* kazam : pythin3 screen recorder based on pulseaudio streamer, with "xp style asistonto" not so usefully, but good quality
+* vokoscreen : qt4/qt5 desktop recorder based on ffmpeg (graba de camara, audio, mic, formato gif, liviano, interfaz no falla)
+* obstudio : qt5 opengl desktop recorder based on ffmpeg streamer (very complicated, havywheith and too much noise for do nothing)
+* simplescreenrecorder : qt4/qt5 screenrecorder based on ffmpeg (seems very simple and recomended, not packaged)
+* screenstudio : java recorder based on avirou interfaces, very heavy
+* green-recorder : python gtk based on ffmpeg command, not recomended unless have modern desktop/machine
+
 
 ### juegos
 
