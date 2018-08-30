@@ -69,8 +69,9 @@ https://github.com/codebrainz/geany-zencoding
 
 ### Games
 
-Stockfish, crafty, gnuchess
-minetest : https://build.opensuse.org/project/show/games
+* bambam (pygame, tratar portar)
+* Stockfish, crafty, gnuchess
+* minetest : https://build.opensuse.org/project/show/games
 
 #### linuxgames
 
@@ -165,6 +166,7 @@ deb [arch=amd64,i386] http://ppa.launchpad.net/kxstudio-debian/kxstudio/ubuntu l
 
 ### juegos
 
+* bambam (pygame, tratar portar)
 * Stockfish, crafty, gnuchess
 * https://packages.debian.org/source/jessie/gnubg entre los de inteligencia
 * http://google.github.io/liquidfun/Building/html/md__building_linux.html
