@@ -1,12 +1,16 @@
 # kamailio + rtproxy + mariadb > on Debian
 
-Este documento **muestra como iniciar instalar y desplegar kamalio usando mariadb y rtpproxy** 
-en un debian 8 jessie, o debian 9 para debian 7 pude se presenten problemas 
-ya que la version alli mas vieja y no tiene rtpproxy
+Este documento **muestra como iniciar instalar y desplegar kamailio usando rtpproxy y mariadb** 
+en un debian 8 jessie, para debian 7 o debian 9 puede se presenten problemas por dos razones:
+la primera es que en wheeze el paquete es algo viejo y no tiene rtpproxy, 
+la segunda es que en strech el paquete kamailio tls tiene algunos detalles con el openssl, 
+refierase a https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=902452 
 
-En este usermos el server pre-produccion de ip 10.101.2.146 con ip publica 18.216.104.114
+Cabe destacar que la ip es siempre detectada desde la red interna, 
+si planea usar una ip publica debe emplear esa ip tanto en el rtpproxy (`-l` parametro) como 
+en el dominio del archivo de configuracion de kamailio (`SIPDOMAIN` en el archivo config)
 
-### 1. Instalation de paquetes
+### 1. Instalation de paquetes necesarios
 
 Debian wheeze and jessie tienen paquetes backports, sin embargo con estos comandos no importa que usara 
 automaticamente seleccionara la version backports o elmas nuevo encontrado disponible:
@@ -50,28 +54,18 @@ apt-get -y install kamailio-utils-modules kamailio-tls-modules kamailio-mysql-mo
 **IMPORTANTE** para el caso de mariadb puede o no preguntar por la clave, si no pregunta es porque usa socket, 
 en este csao debe usar un root real al ejecutar la instalacion, nada de sudo ni cosas estilo guindo.
 
-### 2. Configurar mysql
+### 2. Configurar mysql/mariadb
 
 En las versiones anteriores a debian mariadb y/o mysql preguntan para poner una clave al usuario root, 
 pero desde la version 9 esto ya no es asi, y se emplea socket (muy al estilo postgresql).
 
+TODO: para depues abordar **IMPORTANTE** para el caso de mariadb puede o no preguntar por la clave, 
+si no pregunta es porque usa socket, en este csao debe usar un root real al ejecutar la instalacion
+
 ### 3. Configurar rtpproxy
 
-Se usara la ip publica, sino usar la interna y redireccionar con el firewall. 
-Se detiene el servicio y se edita el archivo `/etc/default/rtpproxy` ya que 
-las ultimas versiones ya gestionan el usuario el cual arranca el servicio.
-
-Si se usara en el mismo servidor donde esta el kamailio:
-
-```
-service rtpproxy stop
-
-sed "s/^#\(CONTROL_SOCK=\".*\)/\1/" -i rtpproxy
-
-service rtpproxy start
-```
-
-Si se quiere usar en diferente servidor del de kamailio (asi lo espera):
+LAstimosamente el kamailio espera encontrar la manera UDP asi que si tiene 
+una ip publica cambie el valor del `ipdefval` en el export:
 
 ```
 service rtpproxy stop
@@ -85,13 +79,10 @@ sed "/^[# ]*EXTRA_OPTS=.*/cEXTRA_OPTS=\" -l $ipdefval \"" -i /etc/default/rtppro
 service rtpproxy start
 ```
 
-Notese que el rtpproxy es para direcciones externas, asi que montarlo en ip internas no tiene mucho sentido, 
-aqui el script esta indagando en el primer dispositivo de red activo.. 
-pero es mejor usar tanto en kamailio domain como en rtpproxy directamente la iṕ real domain.
-
 ### 4. Configuracion kamailio
 
-Generar un certificado, configurar el modulo http y el modulo extensiones, asi como el mas delicado el modulo sip:
+Generar un certificado, preconfigurar para generar la DB y configurar el TLS:
+
 
 **4.1 Pre-configuracion kamailio** 
 
@@ -124,8 +115,7 @@ Preguntara por la clave de root, ingresarla a mano y creara todo lo necesario en
 
 **4.2 Configurar kamailio**
 
-Configurar editando el archivo `kamailio.cfg` : 
-**TODO:** usar comando sep para adicionar nat, mysql y tls
+Mencionar que modulos usar en `kamailio.cfg` primeras lineas (leer) : TODO: usar comando sep para adicionar nat, mysql y tls
 
 
 ```
@@ -134,7 +124,8 @@ Configurar editando el archivo `kamailio.cfg` :
 #!define WITH_TLS
 ```
 
-Recordar que se debe usar la misma clave secreta de la preconfiguracion de la db:
+Apuntar a la base de datos preconfigurada:
+
 
 ```
 export ipdefdev=$(netstat -rn | awk '/^0.0.0.0/ {thif=substr($0,74,10); print thif;} /^default.*UG/ {thif=substr($0,65,10);print thif;}' | head -1)
@@ -161,21 +152,20 @@ export ipdefdev=$(netstat -rn | awk '/^0.0.0.0/ {thif=substr($0,74,10); print th
 export ipdefval=$(/sbin/ifconfig $ipdefdev | grep 'Link ' -A 2 -B 2|grep 'inet' | grep -v 'inet6' | cut -d' ' -f12|cut -d'r' -f2|cut -d':' -f2)
 
 openssl req -x509 -days 360 -nodes -newkey rsa:4096 \
-   -subj "/C=VE/ST=Home/L=Home/O=Own/OU=Own/CN=$ipdefval" \
+   -subj "/C=VE/ST=Bolivar/L=Upata/O=VenenuX/OU=VenenuX/CN=$ipdefval" \
    -keyout "/etc/ssl/certs/$ipdefval.pem" -out "/etc/ssl/certs/$ipdefval.pem"
 ```
 
 Configurar el modulo TLS:
 
 ```
-export ipdefdev=$(netstat -rn | awk '/^0.0.0.0/ {thif=substr($0,74,10); print thif;} /^default.*UG/ {thif=substr($0,65,10);print thif;}' | head -1)
-export ipdefval=$(/sbin/ifconfig $ipdefdev | grep 'Link ' -A 2 -B 2|grep 'inet' | grep -v 'inet6' | cut -d' ' -f12|cut -d'r' -f2|cut -d':' -f2)
-
 sed "s|private_key =.*|private_key = /etc/ssl/certs/$ipdefval.pem|g" -i /etc/kamailio/tls.cfg
 sed "s|certificate =.*|certificate = /etc/ssl/certs/$ipdefval.pem|g" -i /etc/kamailio/tls.cfg
 sed "s|verify_certificate =.*|verify_certificate = no|g" -i /etc/kamailio/tls.cfg
 sed "s|require_certificate =.*|require_certificate = yes|g" -i /etc/kamailio/tls.cfg
 ```
+
+**4.4 Configurar y Habilitar el servicio:**
 
 Habilitar el servicio:
 
@@ -188,7 +178,7 @@ sed "s|.*SHM_MEMORY=.*|SHM_MEMORY=192|g" -i /etc/default/kamailio
 sed "s|.*PKG_MEMORY=.*|PKG_MEMORY=24|g" -i /etc/default/kamailio
 ```
 
-**3.5 Verificar el servicio**
+**4.5 Verificar el servicio**
 
 ```
 service kamailio status | grep 'ctive'
@@ -244,3 +234,11 @@ isql kamailioro -v
 que este se conecte a la db kamailio, para esto hay que realizar con ligeras 
 variaciones la misma configuracion pero en la maquina donde esta la db, hay que 
 dar permisos de conectividad tanto nivel de mariadb/mysql como en el firewal y la red.
+
+
+## II. Probar la configuracion de el kamailio con cliente rtc
+
+WIP/TODO:
+
+http://kb.asipto.com/kamailio:skype-like-service-in-less-than-one-hour#jitsi_installation
+
