@@ -35,7 +35,41 @@ con usuarios virtuales o con usuarios reales, las siguientes secciones usaran us
 
 ## 2 Configuracion vsftp
 
-### 2.1 Configuracion de cualquier caso pero con SSL/TLS
+Este programa usa el sistema PAM de autenticacion para todo, de alli su simplicidad, 
+porque en realidad sea cual sea el metodo (base de datos, archivo, sistema) 
+en realidad se enfoca unicamente en el protocolo en si, 
+mientras que la autenticacion la delega a PAM, siendo uno de los mas eficientes.
+
+El programa abre dos procesos por conecion, y puede comunicarse entre instancias, 
+se puede ejecutar dos programas vsftpd para dos ip distintas en el mismo servicio, 
+y este se comunicara y tendra en cuenta el mismo usuario. Simplemente solo hay que 
+indicarle el archivo de configuracion distinto por cada instancia.
+La unica distribucion Linux que hace esto es RedHAt.
+
+### 2.1 Activar usuarios locales
+
+Debian viene pro defecto activado con lo necesario, usuarios locales y un modulo pam que permite su uso
+
+Debemos tener en cuenta que FTP envia en el momento de inicio de sesion las claves en texto plano, 
+por lo que esta opcion es un tanto decir al mundo "estas son las claves de mis usuarios".
+
+```
+sed "s|.*local_enable=.*|local_enable=YES|g" -i /etc/vsftpd.conf # esto permite que los usuarios de /etc/passwd se logeen
+sed "s|.*write_enable=.*|write_enable=YES|g" -i /etc/vsftpd.conf # solo si desea subir al ftp por los usuarios
+sed "s|.*chroot_local_user=.*|chroot_local_user=YES|g" -i /etc/vsftpd.conf # limitar su ambito a los archivos de su home definido
+sed "s|.*ls_recurse_enable=.*|ls_recurse_enable=NO|g" -i /etc/vsftpd.conf # limitar a solo ver lo propio donde esta
+sed "s|.*local_umask=.*|local_umask=027|g" -i /etc/vsftpd.conf # hace que los permisos dean wr--r---- o 640
+sed "s|.*.*||g" -i /etc/vsftpd.conf
+sed "s|.*.*||g" -i /etc/vsftpd.conf
+sed "s|.*.*||g" -i /etc/vsftpd.conf
+
+allow_writeable_chroot=YES # opcion que permite chroot_local_user=YES escribible desde vsftpd 3.0.0, pero algo insegura
+local_root=/home # esto haria ver todos los directorios de home, es uan de las opciones en vez de usar 
+tilde_user_enable=YES # permite usar al igual que los http el estido "~user" para el usuario "user"
+```
+
+
+### 2.2 Activar y configurar SSL/TLS
 
 Debemos generar un certificado, en este caso sera autofirmado, sino genere uno `let's encrypt`, 
 la unica diferencia es que tanto la llave privada (privkey.pem) como la publica (fullchain.pem) 
@@ -59,9 +93,96 @@ export ipdefval=$(/sbin/ifconfig $ipdefdev | grep 'Link ' -A 2 -B 2|grep 'inet' 
 sed "s|.*rsa_cert_file=.*|rsa_cert_file=/etc/ssl/certs/$ipdefval.pem|g" -i /etc/vsftp.conf
 sed "s|.*rsa_private_key_file=.*|rsa_private_key_file=/etc/ssl/certs/$ipdefval.pem|g" -i /etc/vsftp.conf
 sed "s|.*ssl_enable=.*|ssl_enable=YES|g" -i /etc/vsftp.conf
-sed "s|.*.*||g" -i /etc/vsftp.conf
-sed "s|.*.*||g" -i /etc/vsftp.conf
+sed "s|.*\n|\nssl_ciphers=MEDIUM\n|g" -i /etc/vsftp.conf
 ```
+
+# 3. Compatibilidad vsftpd
+
+Dado el FTP es un protocolo viejo y sin muchas complicaciones tiene una muy baja seguridad, 
+si se aumenta esta seguridad muchos clientes FTP no podran conectar, con estas recomendaciones 
+se puede configurar el vsftpd para que se tenga un minimo de compatibilidad sacrificando seguridad, 
+en caso contrario refierase a la siguiente seccion donde se aumenta la seguridad pero 
+se deja de lado mucha compatibilidad.
+
+### 3.1 NAT, Modo pasivo y ip interna vs ip externa
+
+En un entorno empresarial, la proteccion y resguardo es lo comun, el cortafuegos/firewall 
+nunca tien ningun puerto abierto, todos cerrados. Generalmente novatos, recien graduados, 
+los que aprenden con software libre y maqunitas windo, **creen** que la ip de su maquina 
+y la ip externa siempre estaran muy comunicadas, no es insultivo sino una realidad.
+
+El modo pasivo se conecta a cualquier puerto aleatorio > 1023, esto es un problema, ya que 
+el cortafuegos los tiene bloqueados seimpre. Por lo tanto, hay definir un rango de puertos 
+para que VSFTP los utilice para las conexiones `PASV` y luego abrir estos en el cortafuegos.
+
+1. definir la ip externa a usar con `pasv_address=200.100.6.200` no importa ya tenga varias internas
+2. para varias ip, puede activar promiscuo `pasv_promiscuous=YES` pero no se recomienda!
+3. aunque viene activada puede explicitamente definir `pasv_enable=YES` 
+4. definir el rango de puertos con `pasv_min_port=12700` hasta `pasv_max_port=12800` para control
+5. definir si quiere o no cambiar el puerto fpt, de 21 por ejemplo `listen_port=12890`
+6. definir `port_enable=YES` para que se pueda obtener esta comunicacion de data control
+7. si usa esos sistemitas 64bit a la moda, debe definir `seccomp_sandbox=NO` sino explotara.
+8. ir al cortafuegos/firewall y abrir el puerto ftp (que en este caso definimos con 12890)
+9. ir al cortafuegos/firewall y abrir el rango de control (que definimos de 12700 al 12800)
+
+Con esto ya podra conectarse tanto desde la ip interna asi como la ip externa!
+Lectura recomendada: http://slacksite.com/other/ftp.html
+
+### 3.2 Activar SSL/TLS y compatibilidad FTP
+
+Dado no todos los clientes soportan "ftps" sino solo ftp, se activan `ssl_sslv2` y `ssl_sslv3`, 
+adicional se apaga `force_local_data_ssl=NO` ya que lo unico que nos insteresa es proteger el acceso 
+y por ende solo el login es encriptado con `force_local_logins_ssl=YES`, aunque se puede colocar a "NO" 
+y admitiria ambos protocolos lo cual es el nivel mas seguro y al mismo tiempo compatible.
+
+```
+require_ssl_reuse=NO
+validate_cert=NO
+force_local_data_ssl=NO
+force_local_logins_ssl=YES
+ssl_tlsv1=YES
+ssl_sslv2=YES
+ssl_sslv3=YES
+ssl_ciphers=MEDIUM
+```
+
+# 4. Seguridad vsftpd
+
+### 3 Alta seguridad FTP vsftpd
+
+**Alta encriptacion** colocar `ssl_sslv2` y `ssl_sslv3` en "NO" ya que estos tienen algunos hoyos 
+de seguridad desde el 2010, aumentar el nivel de cipher a `ssl_ciphers=TLSv1` junto con `ssl_tlsv1=YES` 
+desactivando el resto de las versiones ssl define una seguridad alta en la encriptacion.
+
+**Forzar encriptqacion**  obligar encriptar toda la data con `force_local_data_ssl=YES` 
+hace que todo el flujo sea sobre SSL y `force_local_logins_ssl=YES` hace que la autenticacion 
+sea tambien unicamente encriptada, OJO ESTO HACE INCOMPATIBLE CON CLEITNES FTP VIEJOS.
+
+**Desctivar chroots escribibles** Adicional a esto hay que desabilitar la posibilidad de chroot, 
+hay 2 maneras de manejar esto:
+* **Opcion A** usar raiz chroot padre de los directorios de usuarios escribibles \
+ejemplo asumiento sera `/home/$USERS` es asi:
+  * desactivar `allow_writeable_chroot=NO`
+  * definir `passwd_chroot_enable=YES`, y OJO esto necesitara alterar el `/etc/passwd`
+  * a cada usuario ftp, alterar su definicion de home en `/etc/passwd` de `/home/user` a `/home/./user`
+  * definir la raiz de cada usuario ftp para el chroot `local_root=/home`
+* **Opcion B** usar raiz chroot limitada y contenido libre, define una raiz inmutable o directorio \
+de usuario no escribible, y dentro directorios de trabajo, ejemplo asumiento sera `/home/$USERS` es asi:
+  * desactivar `allow_writeable_chroot=NO`
+  * hacer solo lectura el directorio raiz de cada usuario `chmod a-w /home/user1; chmod a-w /home/user2` etc
+  * crear un directorio escribible dentro de cada usuario (sino no podran subir ni hacer nada)
+  * definir la raiz de cada usuario ftp para el chroot `local_root=/home`
+
+*EXPLICACION DE PORQUE NO ACTIVAR CHROOT ESCRIBIBLES (`allow_writeable_chroot=YES` DEBE SER "NO"):*
+si las credenciales de un usuario se conocen (se comprometen), se permite un ROARING BEAST ATTACK. 
+que se basa en librerías dinámicas de las que dependen en rutas de código especificas (ejem: /etc /usr/lib)
+Con un chroot escribible, el atacante sube versiones malignas de esas librerías a un "/etc dentro del chroot", 
+luego envía un comando al servidor FTP (ya que esta ejecutándose como root) que lo induce a ejecutar 
+algún código que se carga en esa librería dinámica desde /etc. Ya que el código maligno del atacante 
+se ejecuta como root y esta lib es similar a una ya existente, puede terminar cargandose por encontrar dicha 
+ruta de manera inmediata, esto hace que el ataque pase de ser un usuario con acceso a la maquina.
+
+**Modo pasivo y no promiscuo**
 
 # 3 Configuracion vsftp+pam
 
@@ -132,8 +253,8 @@ crear el servicio pam para mysql, para envriptar colocar `crypt=3` y usara md5, 
 
 ```
 cat /etc/pam.d/vsftpdmysql << EOF
-auth required pam_mysql.so user=elftp passwd=elftppass host=localhost db=elftp table=ftp_users usercolumn=usuario passwdcolumn=clave crypt=0
-account required pam_mysql.so user=elftp passwd=elftppass host=localhost db=elftp table=ftp_users usercolumn=usuario passwdcolumn=clave crypt=0
+auth required pam_mysql.so user=elftp passwd=elftppass host=localhost db=elftp table=ftp_users usercolumn=usuario passwdcolumn=clave crypt=0 [where=estado='ACTIVO']
+account required pam_mysql.so user=elftp passwd=elftppass host=localhost db=elftp table=ftp_users usercolumn=usuario passwdcolumn=clave crypt=0 [where=estado='ACTIVO']
 EOF
 ```
 
@@ -141,51 +262,55 @@ editar el vsftpd.conf, nuestro archivo se divide (para seguir a Debian) en dos p
 las opciones que ya tenia debian y las que no estan y necesitamos
 
 ```
-#opciones que ya tiene debian cmbiadas o no:
 listen=NO
 listen_ipv6=YES
+dirmessage_enable=YES
+use_localtime=YES
+connect_from_port_20=YES
+delete_failed_uploads=YES
+
+idle_session_timeout=200
+data_connection_timeout=200
+ftpd_banner=VNX
+chroot_local_user=YES
+chroot_list_enable=NO
+ls_recurse_enable=NO
+secure_chroot_dir=/var/run/vsftpd/empty
+utf8_filesystem=YES
+
+hide_ids=YES
 anonymous_enable=NO
 local_enable=YES
 write_enable=YES
-#anon_upload_enable=YES
-#anon_mkdir_write_enable=YES
-dirmessage_enable=YES
-use_localtime=YES
-xferlog_enable=YES
-connect_from_port_20=YES
-#chown_uploads=YES
-#chown_username=whoever
-#xferlog_file=/var/log/vsftpd.log
-#xferlog_std_format=YES
-#idle_session_timeout=600
-#data_connection_timeout=120
-#nopriv_user=ftpsecure
-#async_abor_enable=YES
-#ascii_upload_enable=YES
-#ascii_download_enable=YES
-#ftpd_banner=Welcome to blah FTP service.
-#deny_email_enable=YES
-#banned_email_file=/etc/vsftpd.banned_emails
-chroot_local_user=YES
-chroot_list_enable=YES
-#chroot_list_file=/etc/vsftpd.chroot_list
-#ls_recurse_enable=YES
-secure_chroot_dir=/var/run/vsftpd/empty
-pam_service_name=vsftpd
-#rsa_cert_file=/etc/ssl/certs/37.10.36.66.pem
-#rsa_private_key_file=/etc/ssl/certs/37.10.36.66.pem
-#ssl_enable=YES
-#ssl_ciphers=HIGH
-#ssl_tlsv1=YES
-#ssl_sslv2=NO
-#ssl_sslv3=NO
-
-#opciones nuevas
-local_root=/srv/ftp/$USER
+chmod_enable=YES
+chown_uploads=YES
+chown_username=www-data
+guest_enable=YES
+guest_username=ftp
+nopriv_user=ftp
+virtual_use_local_privs=YES
+pam_service_name=vsftpdmysql
 user_sub_token=$USER
+local_root=/home/$USER/ftp
+user_config_dir=/etc
+local_umask=007
+file_open_mode=0664
+
+xferlog_enable=YES
+xferlog_file=/var/log/vsftpd.log
+#xferlog_std_format=YES
+log_ftp_protocol=YES
+
+pasv_address=200.0.0.0
+pasv_promiscuous=NO
+pasv_enable=YES
+pasv_min_port=12700
+pasv_max_port=12800
+listen_port=12600
+port_enable=YES
 ```
 
-
+TODO: usar  sed con deteccion si el parametro existe
 
 crear user en home intranet, se adiciona a el grupo www-data porque usaremos un fronend enel futuro (la unica ventaja sobre postgres)
 
