@@ -46,9 +46,34 @@ y este se comunicara y tendra en cuenta el mismo usuario. Simplemente solo hay q
 indicarle el archivo de configuracion distinto por cada instancia.
 La unica distribucion Linux que hace esto es RedHAt.
 
+### 2.1 Activar para anonimo
+
+Debian viene por defecto activado con lo necesario, usuarios locales y un modulo pam que permite su uso
+
+Debemos tener en cuenta que FTP envia en el momento de inicio de sesion las claves en texto plano, 
+por lo que esta opcion es un tanto decir al mundo "estas son las claves de mis usuarios".
+
+```
+sed "s|.*local_enable=.*|local_enable=NO|g" -i /etc/vsftpd.conf # ningun usuario del sistema se puede acceder al ftp
+sed "s|.*anonymous_enable=.*|anonymous_enable=YES|g" -i /etc/vsftpd.conf # el acceso es libre no necesita clave, pero solo para ver
+service vsftpd restart
+```
+
+Al archivo `vsftpd.conf` se le **DEBE ADICIONAR** para el caso de acceso anonimo:
+
+`no_anon_password=YES` # sin clave, pero podemos asignar... es decir un acceso que no pise user, solo una clave
+`anon_root=/srv/ftp` # una vez se ingresa al ftp este directorio es el mostrado al cliente ftp
+`hide_ids=YES` $ mostrara para los clientes apropiados dueño y grupo como "ftp" en vez de develar info
+`allow_anon_ssl=YES` # permite que el usuario anonimo pueda iniciar y tratar usando SSL/TLS conecion encriptada
+
+Con esto ya puede usarse sin tener que meter usuario y clave, pero solo permite descargar
+denegandose aquellos listados en el archivo `/etc/ftpusers`
+**NOTA** ver anexo en el apartado 2.4
+
+
 ### 2.1 Activar usuarios locales
 
-Debian viene pro defecto activado con lo necesario, usuarios locales y un modulo pam que permite su uso
+Debian viene por defecto activado con lo necesario, usuarios locales y un modulo pam que permite su uso
 
 Debemos tener en cuenta que FTP envia en el momento de inicio de sesion las claves en texto plano, 
 por lo que esta opcion es un tanto decir al mundo "estas son las claves de mis usuarios".
@@ -59,17 +84,33 @@ sed "s|.*write_enable=.*|write_enable=YES|g" -i /etc/vsftpd.conf # solo si desea
 sed "s|.*chroot_local_user=.*|chroot_local_user=YES|g" -i /etc/vsftpd.conf # limitar su ambito a los archivos de su home definido
 sed "s|.*ls_recurse_enable=.*|ls_recurse_enable=NO|g" -i /etc/vsftpd.conf # limitar a solo ver lo propio donde esta
 sed "s|.*local_umask=.*|local_umask=027|g" -i /etc/vsftpd.conf # hace que los permisos dean wr--r---- o 640
-sed "s|.*.*||g" -i /etc/vsftpd.conf
-sed "s|.*.*||g" -i /etc/vsftpd.conf
-sed "s|.*.*||g" -i /etc/vsftpd.conf
-
-allow_writeable_chroot=YES # opcion que permite chroot_local_user=YES escribible desde vsftpd 3.0.0, pero algo insegura
-local_root=/home # esto haria ver todos los directorios de home, es uan de las opciones en vez de usar 
-tilde_user_enable=YES # permite usar al igual que los http el estido "~user" para el usuario "user"
+service vsftpd restart
 ```
 
+Al archivo `vsftpd.conf` se le puede adicionar para el caso de usuarios locales esto:
 
-### 2.2 Activar y configurar SSL/TLS
+`allow_writeable_chroot=YES` # opcion que permite `chroot_local_user=YES` escribible desde vsftpd 3.0.0, pero algo insegura
+`local_root=/home` # esto haria ver todos los directorios de home, es uan de las opciones en vez de usar 
+`tilde_user_enable=YES` # permite usar al igual que los http el estido "~user" para el usuario "user"
+
+Con esto ya puede usarse junto con autenticacion de los usuarios del sistema, 
+denegandose aquellos listados en el archivo `/etc/ftpusers`
+**NOTA** ver anexo en el apartado 2.4
+
+
+### 2.3 Refinar activacion de usuarios locales
+
+Copn esto somos mas explicitos en el archivo pam (por si tenemos varios vsftpd ejecutando 
+con distintas formas de autenticado):
+
+```
+sed "s|.*pam_service_name=.*|pam_service_name=vsftplocal|g" -i /etc/vsftpd.conf # aunque esta automatico mejor tenerlo aparte
+cp -f /etc/pam.d/vsftpd /etc/pam.d/vsftpdlocal
+sed "s|file=/etc/ftpusers|file=/etc/ftpdenyusers|" -i /etc/pam.d/vsftpdlocal
+cp -f /etc/ftpusers /etc/ftpdenyusers
+```
+
+### 2.4 Activar y configurar SSL/TLS
 
 Debemos generar un certificado, en este caso sera autofirmado, sino genere uno `let's encrypt`, 
 la unica diferencia es que tanto la llave privada (privkey.pem) como la publica (fullchain.pem) 
@@ -128,7 +169,7 @@ para que VSFTP los utilice para las conexiones `PASV` y luego abrir estos en el 
 Con esto ya podra conectarse tanto desde la ip interna asi como la ip externa!
 Lectura recomendada: http://slacksite.com/other/ftp.html
 
-### 3.2 Activar SSL/TLS y compatibilidad FTP
+### 3.2 Activar SSL/TLS con compatibilidad FTP
 
 Dado no todos los clientes soportan "ftps" sino solo ftp, se activan `ssl_sslv2` y `ssl_sslv3`, 
 adicional se apaga `force_local_data_ssl=NO` ya que lo unico que nos insteresa es proteger el acceso 
@@ -136,14 +177,22 @@ y por ende solo el login es encriptado con `force_local_logins_ssl=YES`, aunque 
 y admitiria ambos protocolos lo cual es el nivel mas seguro y al mismo tiempo compatible.
 
 ```
+export ipdefdev=$(netstat -rn | awk '/^0.0.0.0/ {thif=substr($0,74,10); print thif;} /^default.*UG/ {thif=substr($0,65,10);print thif;}' | head -1)
+export ipdefval=$(/sbin/ifconfig $ipdefdev | grep 'Link ' -A 2 -B 2|grep 'inet' | grep -v 'inet6' | cut -d' ' -f12|cut -d'r' -f2|cut -d':' -f2)
+
+echo "TODO: usar sed aqui etc etc"
+
+rsa_cert_file=/etc/ssl/certs/$ipdefval.pem
+rsa_private_key_file=/etc/ssl/certs/$ipdefval.pem
+ssl_enable=YES
 require_ssl_reuse=NO
 validate_cert=NO
 force_local_data_ssl=NO
-force_local_logins_ssl=YES
+force_local_logins_ssl=NO
 ssl_tlsv1=YES
 ssl_sslv2=YES
 ssl_sslv3=YES
-ssl_ciphers=MEDIUM
+ssl_ciphers=LOW
 ```
 
 # 4. Seguridad vsftpd
@@ -321,6 +370,8 @@ echo "user1 tien edir ftp adentro, ese sera el escribible el resto no, por segur
 chown ftpusers:www-data /home/intranet/elftp/
 ```
 
+
+sed "s|.*.*||g" -i /etc/vsftpd.conf
 
 
 
