@@ -1,4 +1,3 @@
-
 Gogs y gitea : packaging
 ===========================
 
@@ -9,17 +8,81 @@ El trabajo de empaquetamoento esta en los siguiente ITP/RTP de debian:
 
 En un inicio mucha confusion creyendo que gitea era clonico, lo es solo en principio, 
 pero su forma de manejo de desarrollo es muy distinta, cambia mucho en el tiempo.. 
-ademas gitea pretende ser distinto y separado de gogs, llenandolo de nuevas caracteristicas
+
+> a cada nuevo feature en gitea hay dos bugs mas nuevos que resolver
+
+DIFERENCIAS: gitea pretende ser distinto y separado de gogs, llenandolo de nuevas caracteristicas
 mientras gogs pretende manetener simple y con solo lo necesario.
 
 **el paqeute de venenux maneja solo las dependencias actuales, 
 a medida aparece empaquetada una, se sustituye y maneja en el paqeute gogs/gitea**
 
-Dependencias de gogs/gitea y subdependencias en Debian
+
+Fuentes y como manejado de gitea/gogs
+-------------------
+
+Similares.. gitea ramifica lo que va en data en un directorio extra optional
+a diferencia de lo que hacen en todos lados (usar npm etc y descargar desde un repo externo a las fuentes)
+en gogs/gitea todas sus dependencias estan "copiadas" en su propio repo desde los originales, 
+esto es muy comodo pero rompe toda politica Debian.
+
+Directorio debian y proceso de empaquetado
+==========================================
+
+Se emplea las reglas de http://pkg-go.alioth.debian.org/packaging.html#_binary_only_packages
+so the resulting package are named gitea, its a binary only and the version number are correctly.
+
+Compilacion basada en https://github.com/Martchus/PKGBUILDs/tree/master/gogs/default
+
+ debian/control
+-----------------
+
+#### Build depends:
+
+* golang: gogs requiere de 1.6 minimo y gitea de 1.7 minimo, desde jeesie backport ofrece 1.7, go solo depende de libc6 2.3.6
+* rsync: se empleo rsync en vez de usar solo cp, era mas facil para excluir directorio debian posible de upstream
+* libpq-dev : para que tenga soporte postgresql, raro que no pide lo mismo para mysql/mariadb
+* libsqlite3-dev: para que tenga soporte sqlite3 en su db interna, raro no pide lo mismo para mysql/mariadb
+* libpam0g-dev: para que pueda autenticar usuarios git/web con pam, nota: implica gitea/gogs lea /etc/shadow
+* lsb-release: para detectar si es Devuan, Debian o Venenux y empaquetar soporte systemd o no.
+
+#### Depends:
+
+* init-system-helpers |  file-rc | sysv-rc: porque emplea uso de update-rc.d en postinst y prerm
+* git: porque emplea el comando git para iniciar y configurar repositorios
+* adduser: porque configura un usuario para el mismo sistema (no corre como root) en postinst y prerm
+* cron | anacron : en si para monitorear (git es descentralizado, no hay servidor central con eventos que consultar)
+* sqlite3 | postgresql | mysql-server | mariadb-server: sqlite3 primero para configuracion automatica
+
+#### recomienda:
+
+* mta: para notificaciones pro correo, desactivadas por defecto
+
+#### sugiere:
+
+* httpd, lighty, apache2, nginx: en dicho orden ya que apache2 pide mucho y es dificil colocar seguridad
+
+debian/rules:
+--------------
+
+#### parches:
+
+
+Parches:
+---------
+
+No se parchea directo las fuentes, si se alterazen, el empaquetado fallaria, para facilidad se prefiere 
+un empaquetado mas directo y menos dependiente de las fuentes, por ende se parchea usando sed.. 
+
+Es decir no se agrega ni quita nada, solo se cambia lo existente, los cambios se listan aqui:
+
+
+#Dependencias de gogs/gitea y subdependencias en Debian
 --------------------------------------
 
 **GOGS DEPENDENCY TREE (unfinished and unrefined)**
 
+```
 golang-gopkg-gomail.v2-dev
         Not Checked
 golang-gopkg-ldap.v2-dev
@@ -80,10 +143,11 @@ golang-github-go-macaron-cache-dev
                         golang-github-onsi-gomega-dev
                                 [[ CIRCULAR: golang-github-onsi-ginkgo-dev ]]
                                 golang-github-golang-protobuf-dev
-**DONE gogs dependency tree**
+```
 
 ### Dependency Progress de cada paquete en Debian
 
+```
 Import  					InDeb	DebPkgName
 ==						==	==
 
@@ -92,10 +156,7 @@ dropzone					IP	libjs-dropzone
 semantic					IP	libjs-semantic
 vue						IP	libjs-vue
 swagger-ui					IP	libjs-swaggerui
-
-
 github.com/go-gitea/gitea			^HOLD	gitea
-
 
 --	[ fonts ]				--	--
 octicons					Y	fonts-octicons
@@ -243,59 +304,5 @@ gopkg.in/yaml.v2				Y	golang-goyaml-dev
 gopkg.in/macaron.v1				Y	golang-gopkg-macaron.v1-dev
 gopkg.in/ldap.v2				Y	golang-github-go-ldap-ldap-dev
 gopkg.in/redis.v2				Y	golang-gopkg-redis.v2-dev
-
-Fuentes y como manejado de gitea/gogs
--------------------
-
-Similares.. gitea ramifica lo que va en data en un directorio extra optional
-
-Directorio debian y proceso de empaquetado
-==========================================
-
-Se emplea las reglas de http://pkg-go.alioth.debian.org/packaging.html#_binary_only_packages
-so the resulting package are named gitea, its a binary only and the version number are correctly.
-
-Compilacion basada en https://github.com/Martchus/PKGBUILDs/tree/master/gogs/default
-
- debian/control
------------------
-
-#### Build depends:
-
-* golang: gogs requiere de 1.6 minimo y gitea de 1.7 minimo, desde jeesie backport ofrece 1.7, go solo depende de libc6 2.3.6
-* rsync: se empleo rsync en vez de usar solo cp, era mas facil para excluir directorio debian posible de upstream
-* libpq-dev : para que tenga soporte postgresql, raro que no pide lo mismo para mysql/mariadb
-* libsqlite3-dev: para que tenga soporte sqlite3 en su db interna, raro no pide lo mismo para mysql/mariadb
-* libpam0g-dev: para que pueda autenticar usuarios git/web con pam, nota: implica gitea/gogs lea /etc/shadow
-* lsb-release: para detectar si es Devuan, Debian o Venenux y empaquetar soporte systemd o no.
-
-#### Depends:
-
-* init-system-helpers |  file-rc | sysv-rc: porque emplea uso de update-rc.d en postinst y prerm
-* git: porque emplea el comando git para iniciar y configurar repositorios
-* adduser: porque configura un usuario para el mismo sistema (no corre como root) en postinst y prerm
-* cron | anacron : en si para monitorear (git es descentralizado, no hay servidor central con eventos que consultar)
-* sqlite3 | postgresql | mysql-server | mariadb-server: sqlite3 primero para configuracion automatica
-
-#### recomienda:
-
-* mta: para notificaciones pro correo, desactivadas por defecto
-
-#### sugiere:
-
-* httpd, lighty, apache2, nginx: en dicho orden ya que apache2 pide mucho y es dificil colocar seguridad
-
-debian/rules:
---------------
-
-#### parches:
-
-
-Parches:
----------
-
-No se parchea directo las fuentes, si se alterazen, el empaquetado fallaria, para facilidad se prefiere 
-un empaquetado mas directo y menos dependiente de las fuentes, por ende se parchea usando sed.. 
-
-Es decir no se agrega ni quita nada, solo se cambia lo existente, los cambios se listan aqui:
+```
 
