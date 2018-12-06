@@ -8,33 +8,13 @@ solo es el cliente de escritorio o de mobiles.
 El software jitsi comprende 5 componentes:
 * un cliente ("jitsi"), 
 * un servicio de chat web ("jitsi-meet") 
-* componetnes de streaming con audio/video ("")
-* componente de grabacion de streaming ("")
+* servicio de conferencia ("jicofo"), para salas de chat grupal (solo audio)
+* servicio de conferencia (jibri), para salas de chat grupal (video)
+* componetnes de streaming con audio/video ("jitsi-videobridge")
 * componente de integracion con otros ( en desarrollo)
 
 La caracteristica del jitsi frente otros es que es facil de usar, se puede usar 
 sin colocar usuarios y claves. 
-
-Claro esta se puede configurar apra que los exija. 
-# Server Jitsi
-
-Lo que se conoce como **jitsi** es realmente un simple cliente GUI para chat, 
-se llama **jitsi-meet** un servicio de salas de conferencia y chat facil de usar
-que proporciona streaming son solo agregados a la parte de servicio de salas.
-
-# Introduccion y Jitsi-meet respecto xmpp y webserver
-
-El software jitsi comprende 5 componentes:
-* un cliente ("jitsi"), 
-* un servicio de chat web ("jitsi-meet") 
-* componetnes de streaming con audio/video ("jitsi-videobridge")
-* servicio de conferencia ("jicofo")
-* componente de integracion con telefonia ("jigasi")
-
-La caracteristica del jitsi frente otros es que es facil de usar, se puede usar 
-sin colocar usuarios y claves. 
-
-Claro esta se puede configurar para que los exija. 
 
 1. [Instalacion Estandar sin cambios de optimizacion](#parte-1-instalacion-estandar-sin-cambios-de-optimizacion)
    * [Infraestructura simplificada](#infraestructura-simplificada)
@@ -117,11 +97,11 @@ con XMPP y WEBRTC
 
 `apt-get update`
 
-`apt-get install openjdk-8-jre openjdk-8-jre-headless ca-certificates-java`
+`apt-get --no-install-recommends -t $(lsb_release -s -c)-backports openjdk-8-jre openjdk-8-jre-headless ca-certificates-java`
 
-`apt-get install openjdk-8-jdk openjdk-8-jdk-headless openjdk-8-source`
+`apt-get --no-install-recommends -t $(lsb_release -s -c)-backports openjdk-8-jdk openjdk-8-jdk-headless openjdk-8-source`
 
-`apt-get install java-common ant ant-optional`
+`apt-get --no-install-recommends -t $(lsb_release -s -c)-backports java-common ant ant-optional`
 
 `update-java-alternatives -s java-1.8.0-openjdk-$(dpkg-architecture -q DEB_HOST_ARCH)`
 
@@ -131,7 +111,7 @@ con XMPP y WEBRTC
 
 ### Prosody
 
-`apt-get install prosody prosody-modules lua-zlib lua-dbi-sqlite3 lua-dbi-mysql lua-dbi-postgres lua-5.1-event`
+`apt-get install prosody prosody-modules lua-zlib lua-dbi-sqlite3`
 
 ### Ffmpeg
 
@@ -162,6 +142,8 @@ Video llamada con streaminig y grabacion no es estable aun para mitad de 2018:
 `wget -qO - https://download.jitsi.org/jitsi-key.gpg.key | sudo apt-key add -`
 
 `echo 'deb https://download.jitsi.org unstable/' > /etc/apt/sources.list.d/jitsi-unstable.list`
+
+`apt-get update`
 
 ### install jitsi
 
