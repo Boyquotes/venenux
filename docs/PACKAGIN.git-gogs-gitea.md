@@ -14,7 +14,7 @@ pero su forma de manejo de desarrollo es muy distinta, cambia mucho en el tiempo
 DIFERENCIAS: gitea pretende ser distinto y separado de gogs, llenandolo de nuevas caracteristicas
 mientras gogs pretende manetener simple y con solo lo necesario.
 
-**el paqeute de venenux maneja solo las dependencias actuales, 
+**el paquete de venenux maneja solo las dependencias actuales, 
 a medida aparece empaquetada una, se sustituye y maneja en el paqeute gogs/gitea**
 
 
@@ -29,10 +29,18 @@ esto es muy comodo pero rompe toda politica Debian.
 Directorio debian y proceso de empaquetado
 ==========================================
 
-Se emplea las reglas de http://pkg-go.alioth.debian.org/packaging.html#_binary_only_packages
-so the resulting package are named gitea, its a binary only and the version number are correctly.
+Se empleo las reglas de la pagina extinta http://pkg-go.alioth.debian.org/packaging.html#_binary_only_packages
+reglas comunes mucho sin necesidad de debheler >> 9 ni del dh-golan, lo que lo hace portable 
+a cualquier version vieja o nueva de debian.
 
 Compilacion basada en https://github.com/Martchus/PKGBUILDs/tree/master/gogs/default
+
+ debian/rules
+----------------
+
+Se ha cambiado desde su base origen de el PKGBUILD, tomando en cuent lso tips:
+* https://dave.cheney.net/2013/06/14/you-dont-need-to-set-goroot-really
+* https://pocketgophers.com/go-install-vs-go-build/
 
  debian/control
 -----------------
