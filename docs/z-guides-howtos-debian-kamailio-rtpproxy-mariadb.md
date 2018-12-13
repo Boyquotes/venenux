@@ -1,19 +1,21 @@
 # kamailio + rtproxy + mariadb > on Debian
 
 Este documento **muestra como iniciar instalar y desplegar kamailio usando rtpproxy y mariadb** 
-en un debian 8 jessie, para debian 7 o debian 9 puede se presenten problemas por dos razones:
-la primera es que en wheeze el paquete es algo viejo y no tiene rtpproxy, 
-la segunda es que en strech el paquete kamailio tls tiene algunos detalles con el openssl, 
-refierase a https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=902452 
+en un debian 8 jessie, para debian 7 o debian 9 ya tambien sirve usando los repos `vegnuli:voip` 
+de VenenuX (vegnuli) en "openssusebuild.service" https://build.opensuse.org/project/show/home:vegnuli:voip.
 
-Cabe destacar que la ip es siempre detectada desde la red interna, 
-si planea usar una ip publica debe emplear esa ip tanto en el rtpproxy (`-l` parametro) como 
-en el dominio del archivo de configuracion de kamailio (`SIPDOMAIN` en el archivo config)
+Cabe destacar que la ip es siempre detectada desde la red interna, OJO!, 
+si planea usar una ip publica debe emplear NAT traversal con una interfaz "advertise", 
+en la seccion anexo se especifica esto.
+
+**IMPORTANTE** se usa la ip interna y una solamente, tanto en el rtpproxy (`-l` parametro) 
+como en la configuracion de kamailio (y el `SIPDOMAIN` en el archivo config), 
+**para configurar NAT traversal debe usar ip privada con "advertise" a la ip publica**
 
 ### 1. Instalation de paquetes necesarios
 
-Debian wheeze and jessie tienen paquetes backports, sin embargo con estos comandos no importa que usara 
-automaticamente seleccionara la version backports o elmas nuevo encontrado disponible:
+Automaticamente aunque se tiene kamailio 4.4 y 5.1 al realizar la instalacion 
+se seleccionara el mas nuevo disponible para la versin de Debian usada:
 
 ```
 apt-get install  lsb-release 
@@ -47,25 +49,27 @@ apt-get -y install mariadb-server mariadb-client unixodbc libmyodbc net-tools ga
 apt-get -y install rtpproxy 
 
 apt-get -y install kamailio 
-apt-get -y install kamailio-utils-modules kamailio-tls-modules kamailio-mysql-modules kamailio-unixodbc-modules kamailio-extra-modules kamailio-presence-modules
+apt-get -y install kamailio-utils-modules kamailio-tls-modules kamailio-unixodbc-modules kamailio-extra-modules kamailio-json-modules
+apt-get -y install kamailio-mysql-modules kamailio-postgres-modules kamailio-geoip-modules 
+apt-get -y install kamailio-websocket-modules kamailio-presence-modules kamailio-xml-modules kamailio-xmpp-modules
 
 ```
 
-**IMPORTANTE** para el caso de mariadb puede o no preguntar por la clave, si no pregunta es porque usa socket, 
-en este csao debe usar un root real al ejecutar la instalacion, nada de sudo ni cosas estilo guindo.
+**IMPORTANTE** si al instalar mariadb no se pregunta por clave, debe configurar una!
+para esto vease la seccion anexa al final, este caso afecta a Debian Stretch en adelante.
+
 
 ### 2. Configurar mysql/mariadb
 
 En las versiones anteriores a debian mariadb y/o mysql preguntan para poner una clave al usuario root, 
 pero desde la version 9 esto ya no es asi, y se emplea socket (muy al estilo postgresql).
 
-TODO: para depues abordar **IMPORTANTE** para el caso de mariadb puede o no preguntar por la clave, 
-si no pregunta es porque usa socket, en este csao debe usar un root real al ejecutar la instalacion
+TODO: tema de clave y config minima mysql/mariadb
 
 ### 3. Configurar rtpproxy
 
-LAstimosamente el kamailio espera encontrar la manera UDP asi que si tiene 
-una ip publica cambie el valor del `ipdefval` en el export:
+Se usara socket unix, el cual evita trafico innecesario por la interfaces de red, 
+obteniendo rendimiento extra ya que ambos software estan en la misma maquina:
 
 ```
 service rtpproxy stop
@@ -73,16 +77,29 @@ service rtpproxy stop
 export ipdefdev=$(netstat -rn | awk '/^0.0.0.0/ {thif=substr($0,74,10); print thif;} /^default.*UG/ {thif=substr($0,65,10);print thif;}' | head -1)
 export ipdefval=$(/sbin/ifconfig $ipdefdev | grep 'Link ' -A 2 -B 2|grep 'inet' | grep -v 'inet6' | cut -d' ' -f12|cut -d'r' -f2|cut -d':' -f2)
 
-sed "s/^#\(CONTROL_SOCK=udp.*\)/\1/" -i rtpproxy
+sed 's/^[# ]*The control/USER=kamailio\n\n&/g' -i /etc/default/rtpproxy
+sed "s/^#\(CONTROL_SOCK=\"unix.*\)/\1/" -i /etc/default/rtpproxy
 sed "/^[# ]*EXTRA_OPTS=.*/cEXTRA_OPTS=\" -l $ipdefval \"" -i /etc/default/rtpproxy
 
 service rtpproxy start
 ```
 
+Una vez esto, se le indica a el kamailio el socket unix antes de usarlo:
+
+```
+sed 's|modparam(\"rtpproxy\", \"rtpproxy_sock\".*|modparam(\"rtpproxy\", \"rtpproxy_sock\", \"unix:/var/run/rtpproxy/rtpproxy.sock\")|' -i /etc/kamailio/kamailio.cfg
+```
+
+**IMPORTANTE** de no estar en la misma maquina, se debe usar UDP (como viene por defecto), 
+pero con la ip publica y un cortafuegos que solo permita las ip de kamailio y rtpproxy, 
+en la seccion de anexo se puede ver como realizarlo en esta manera.
+
+
 ### 4. Configuracion kamailio
 
 Generar un certificado, preconfigurar para generar la DB y configurar el TLS:
 
+**IMPORTANTE**: desde kamailio 5 el parametro `fork=yes` no debe estar presente.
 
 **4.1 Pre-configuracion kamailio** 
 
@@ -91,9 +108,9 @@ service kamailio stop
 
 export ipdefdev=$(netstat -rn | awk '/^0.0.0.0/ {thif=substr($0,74,10); print thif;} /^default.*UG/ {thif=substr($0,65,10);print thif;}' | head -1)
 export ipdefval=$(/sbin/ifconfig $ipdefdev | grep 'Link ' -A 2 -B 2|grep 'inet' | grep -v 'inet6' | cut -d' ' -f12|cut -d'r' -f2|cut -d':' -f2)
-export palabrasecret=colocaraquiunaclaveenlitras
+export palabrasecret=secreto
 
-sed "/^[# ]*SIP_DOMAIN/cSIP_DOMAIN=$ipdefval" -i /etc/kamailio/kamctlrc
+#sed "/^[# ]*SIP_DOMAIN/cSIP_DOMAIN=$ipdefval" -i /etc/kamailio/kamctlrc
 sed '/^[# ]*DBENGINE/cDBENGINE=MYSQL' -i /etc/kamailio/kamctlrc
 sed '/^[# ]*DBHOST/cDBHOST=localhost' -i /etc/kamailio/kamctlrc
 sed '/^[# ]*DBNAME/cDBNAME=kamailiosip' -i /etc/kamailio/kamctlrc
@@ -111,36 +128,53 @@ sed '/^[# ]*INSTALL_DBUID_TABLES/cINSTALL_DBUID_TABLES=yes ' -i /etc/kamailio/ka
 kamdbctl create
 ```
 
-Preguntara por la clave de root, ingresarla a mano y creara todo lo necesario en el mysql para arrancar.
+el ultimo comando si la clave de root se configuro correctamente, creara y configurara 
+la base de datos y preparara lso datos para el primer uso del servicio.
+
+**IMPORTANTE** los `STANDAR_MODULES` y/o los `EXTRA_MODULES` dependen de los paquetes si o sino 
+estan isntalados, estos deben habilitarse o no segun criterio, si tiene dudas, para habilitarlos 
+todos, simpemente instale todos los paquetes de kamailio y habilite a discresion; en el peor 
+de los casos, no habilite o no altere estas configuracones o lineas.
+
 
 **4.2 Configurar kamailio**
 
-Mencionar que modulos usar en `kamailio.cfg` primeras lineas (leer) : TODO: usar comando sep para adicionar nat, mysql y tls
+Mencionar que modulos usar en `kamailio.cfg` primeras lineas explicadas:
+* usar TLS
+* usar USRLOCDB eso registrara lso usuarios y los guarda en la DB
+* usar NAT el kamailio usa ip interna y con rtpproxy se comunican externamente
+* usar AUTH que hace que lso usuario puedan ser autenticables con claves
+* usar MYSQL porque asi se definio en el kamctrlrc configurado previo (DBENGINE)
+
+Los comandos segun el orden de lo explicado:
 
 
 ```
-#!define WITH_MYSQL
-#!define WITH_NAT
-#!define WITH_TLS
+sed 's/^[# ]*Several/#!define WITH_TLS\n&/g' -i /etc/kamailio/kamailio.cfg
+sed 's/^[# ]*Several/#!define WITH_USRLOCDB\n&/g' -i /etc/kamailio/kamailio.cfg
+sed 's/^[# ]*Several/#!define WITH_NAT\n&/g' -i /etc/kamailio/kamailio.cfg
+sed 's/^[# ]*Several/#!define WITH_AUTH\n&/g' -i /etc/kamailio/kamailio.cfg
+sed 's/^[# ]*Several/#!define WITH_MYSQL\n&/g' -i /etc/kamailio/kamailio.cfg
 ```
+TODO: si se corren mas de vez duplican los valores, pendiente comando extra para evitar fallar
 
-Apuntar a la base de datos preconfigurada:
 
+Apuntar a la base de datos preconfigurada, recordemos usamos mysql, sino cambiar a psql:
 
 ```
 export ipdefdev=$(netstat -rn | awk '/^0.0.0.0/ {thif=substr($0,74,10); print thif;} /^default.*UG/ {thif=substr($0,65,10);print thif;}' | head -1)
 export ipdefval=$(/sbin/ifconfig $ipdefdev | grep 'Link ' -A 2 -B 2|grep 'inet' | grep -v 'inet6' | cut -d' ' -f12|cut -d'r' -f2|cut -d':' -f2)
-export palabrasecret=colocaraquiunaclaveenlitras
+export palabrasecret=secreto
 
 sed "s|#!define DBURL \"mysql.*|#!define DBURL \"mysql://kamailio:kaadm.$palabrasecret$ipdefval@localhost/kamailiosip\"|" -i /etc/kamailio/kamailio.cfg
 ```
 
-Habilitar el RTP proxy para NAT traversal a la manera debian:
-**TODO** WIP aun no sirve el sed.. `modparam("rtpproxy", "rtpproxy_sock", "udp:127.0.0.1:22222")`
+**NOTA** recordar que la clave usa `$ipdefval` y `$palabrasecret` previos (kamctrlrc), para la base de datos.
+
+Habilitar el RTP proxy para NAT traversal usando socket control tal como se hizo previamente en el rtpproxy:
 
 ```
-sed '/^modparam\("rtpproxy".*/cmodparam("rtpproxy", "rtpproxy_sock", "udp:127.0.0.1:22222")' -i /etc/kamailio/kamailio.cfg
-
+sed 's|modparam(\"rtpproxy\", \"rtpproxy_sock\".*|modparam(\"rtpproxy\", \"rtpproxy_sock\", \"unix:/var/run/rtpproxy/rtpproxy.sock\")|' -i /etc/kamailio/kamailio.cfg
 ```
 
 **4.3 Configurar TLS kamailio**
@@ -161,9 +195,13 @@ Configurar el modulo TLS:
 ```
 sed "s|private_key =.*|private_key = /etc/ssl/certs/$ipdefval.pem|g" -i /etc/kamailio/tls.cfg
 sed "s|certificate =.*|certificate = /etc/ssl/certs/$ipdefval.pem|g" -i /etc/kamailio/tls.cfg
+sed "s|.*ca_list = /etc.*|ca_list = /etc/ssl/certs/$ipdefval.pem|" -i /etc/kamailio/tls.cfg
 sed "s|verify_certificate =.*|verify_certificate = no|g" -i /etc/kamailio/tls.cfg
 sed "s|require_certificate =.*|require_certificate = yes|g" -i /etc/kamailio/tls.cfg
 ```
+
+**NOTA** recordar que se usa `$ipdefval` previos del kamctrlrc
+
 
 **4.4 Configurar y Habilitar el servicio:**
 
@@ -209,7 +247,7 @@ del systema para uso:
 ```
 export ipdefdev=$(netstat -rn | awk '/^0.0.0.0/ {thif=substr($0,74,10); print thif;} /^default.*UG/ {thif=substr($0,65,10);print thif;}' | head -1)
 export ipdefval=$(/sbin/ifconfig $ipdefdev | grep 'Link ' -A 2 -B 2|grep 'inet' | grep -v 'inet6' | cut -d' ' -f12|cut -d'r' -f2|cut -d':' -f2)
-export palabrasecret=colocaraquiunaclaveenlitras
+export palabrasecret=secreto
 
 cat > /etc/odbc.ini << EOF
 [kamailiosip]
@@ -223,6 +261,8 @@ Password     = \"kaadm.$palabrasecret$ipdefval\"
 Option       = 3
 Socket       = 
 ```
+
+**NOTA** recordar que la clave usa `$ipdefval` y `$palabrasecret` previos (kamctrlrc), para la base de datos.
 
 para probarla:
 
