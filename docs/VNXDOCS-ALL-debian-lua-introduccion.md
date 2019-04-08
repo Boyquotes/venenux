@@ -2,67 +2,235 @@
 
 en esta guía aprenderemos lo basico de lua.
 
-* Instalación
-* Empecemos
- * Comentarios
- * Variables
- * Tipos de datos
- * Operadores
-  * Operadores aritméticos
-  * Operadores logicos
-  * Operadores relacionales
- * Estructuras de control
-  * Condicionales
-  * Bucles
- * Funciónes
+* [Acerca de Lua](#acerca-de-lua)
+  * [Para que sirve](#para-que-sirve)
+  * [Instalación](#instalacion)
+    * [Multiples versiones](#multiples-versiones)
+    * [JIT optimizacion al vuelo](#jit-optimizacion-al-vuelo)
+* [Entorno](#entorno)
+  * [Guia rapida para impacientes](#guia-rapida-para-impacientes)
+  * [Guia mas detallada pero larga](#guia-mas-detallada-pero-larga)
+  * Comentarios
+  * Variables
+  * Tipos de datos
+  * Operadores
+   * Operadores aritméticos
+   * Operadores logicos
+   * Operadores relacionales
+  * Estructuras de control
+   * Condicionales
+   * Bucles
+  * Funciónes
 * Contactos
+
+## Acerca de Lua
+
+Lua **es igual que Python lastimosamente, cada componente se compila contra la version especifica** 
+aunque una gran diferencia **entre versiones medias, Lua es compatible en gran medida, 
+por ejemplo un codigo para Lua 5.1 puede ejecute sin cambios en Lua 5.3 casi siempre.**
+
+Lua es lenguaje scripting, es decir es mayormente interpretado, como Java y Python, 
+recientemente esta la famosa Luajit que ayuda en gran medida, pero Lua es flojo 
+para calculos numericos, mismo problema que tiene Java y Gambas...
+
+### Para que sirve
+
+**No sirve para aplicaciones de escritorio ni para aplicaciones de señalizacion**, ejemplo 
+no se recomienda implementar un enrutador como Kamailio en Lua, debido a el gran 
+calculo matematico necesario carente y la **falta de soporte por hilos.**
+
+**Se recomienda para soluciones puntuales disgregadas, servicios web**, y manejo de 
+archivos, sockets y comunicacion menor entre cliente servidor, **un gran ejemplo es 
+el sistema de chat xmpp "prosody"** fabricado en Lua.
 
 ## Instalación
 
-Debido a su gran popularidad del lenguaje su interprete se encuentra en la mayoría de las distribuciones de Linux.
+Actualmente se **require Lua 5.1 como minimo, esta extendido Lua 5.2 y se prefiere Lua 5.3**, 
 
-Por lo que para su instalación pueden instalarlo con alguno de los siguientes comandos acorde a su distribución que estén utilizando.
+* En Debian gracias a la alta calidad **(a diferencia de otras distros) podemos tener 
+varias versiones de Lua para desarrollar con alta compatibilidad**, usando el sistema 
+de "alternatives"
+* En debian Lua como tal se presenta en la rama 5 desde 5.0 (Debian etch), 
+hasta la version 5.3, pero solo la version 5.1 se asume en todos (Debian strech, jessie) 
+* En Debian se asume 5.1 como la version por defecto en el sistema, por ende **cada vez 
+que instale un paquete desde el repositorio el entorno al cual se adhiere es Lua 5.1** y 
+si lo combina con algun software instalado externamente de Lua no sera muy compatible.
 
-Para los que son usuarios de Debian, Ubuntu, Linux Mint o cualquier sistema derivado de estos, solamente debemos de abrir una terminal y ejecutar en ella el siguiente comando:
+`apt-get install lua50 lua5.1 lua5.2 lua5.3`
 
-`sudo apt install lua5.3`
+### Multiples versiones
 
-Si son usuarios de Arch Linux, Manjaro, Antergos o cualquier distribución derivada de Arch Linux, podemos instalar el interprete desde los repositorios de AUR, para ello solamente debemos de teclear:
+A diferencia de otras distros podemos tener controlado y con alta compatibilidad 
+muchos lenguajes, entre ellos `gcc4` junto con `gcc8` y `lua5.2` junto con `lua5.3`.
 
-`aurman -S lua`
+Para escoger entre que version de lua se ejecutara se emplea el sistema de alternativas, 
+que nos permite lo que casi ninguna distro ofrece. Esto es ejecutando el comando 
+`update-alternatives --config lua-interpreter` para el interprete `lua` y el comando 
+`update-alternatives --config lua-compiler` para el compialdor `luac` que aputara 
+el comando hacia la version sea `lua5.1`, `lua5.2`, `lua50` como se muestra a continuacion:
 
-Mientras que para los que son usuarios de CentOS, RHEL, Fedora o cualquier distribución derivada de estas, lo podemos instalar con:
+```
+root@venenux-massenkoh# ls -l /usr/bin/lua*
+lrwxrwxrwx 1 root root      33 abr  8 09:07 /usr/bin/lua -> /etc/alternatives/lua-interpreter
+-rwxr-xr-x 1 root root   12688 ago 13  2013 /usr/bin/lua50
+-rwxr-xr-x 1 root root  190252 oct 14  2014 /usr/bin/lua5.1
+-rwxr-xr-x 1 root root  214808 oct 14  2014 /usr/bin/lua5.2
+lrwxrwxrwx 1 root root      30 abr  8 09:07 /usr/bin/luac -> /etc/alternatives/lua-compiler
+-rwxr-xr-x 1 root root    9940 ago 13  2013 /usr/bin/luac50
+-rwxr-xr-x 1 root root  119184 oct 14  2014 /usr/bin/luac5.1
+-rwxr-xr-x 1 root root  136784 oct 14  2014 /usr/bin/luac5.2
+-rwxr-xr-x 1 root root 7009924 sep 21  2018 /usr/bin/luajittex
+lrwxrwxrwx 1 root root       6 mar  7  2017 /usr/bin/lualatex -> luatex
+-rwxr-xr-x 1 root root 6768260 sep 21  2018 /usr/bin/luatex
+root@venenux-massenkoh# update-alternatives --config lua-interpreter
+Existen 3 opciones para la alternativa lua-interpreter (que provee /usr/bin/lua).
 
-`sudo dnf install lua`
+  Selección   Ruta             Prioridad  Estado
+------------------------------------------------------------
+* 0            /usr/bin/lua5.2   120       modo automático
+  1            /usr/bin/lua5.1   110       modo manual
+  2            /usr/bin/lua5.2   120       modo manual
+  3            /usr/bin/lua50    80        modo manual
 
-Comprobamos si esta instalado ejecutando en la consola (terminal):
+Pulse <Intro> para mantener el valor por omisión [*] o pulse un número de selección: 0
+root@venenux-massenkoh# update-alternatives --config lua-compiler
+Existen 3 opciones para la alternativa lua-compiler (que provee /usr/bin/luac).
 
-`lua`
+  Selección   Ruta              Prioridad  Estado
+------------------------------------------------------------
+* 0            /usr/bin/luac5.2   120       modo automático
+  1            /usr/bin/luac5.1   110       modo manual
+  2            /usr/bin/luac5.2   120       modo manual
+  3            /usr/bin/luac50    80        modo manual
 
-la salida seria algo como esto:
+Pulse <Intro> para mantener el valor por omisión [*] o pulse un número de selección: 0
+```
 
-```Lua 5.1.5  Copyright (C) 1994-2012 Lua.org, PUC-Rio
->```
+### JIT optimizacion al vuelo
 
-tambien puede crear un archivo cuya extencion seria .lua
-para ejecutar dicho archivo seria de esta manera:
+En debian tenemos disponible desde Debian jessie o Debian 8 el 
+**compialdor en tiempo de ejecucion**, esto significa que los scripts 
+seran compilados a codigo maquina optimizados al momento de ejecutar, 
+y no solo eso, **podran entonces ser enlazados con programas compilados en C/C++.**
 
-`lua archivo.lua`
+Para VenenuX y Debian etch, lenny, squeeze y wheeze esta disponible 
+en los repositorios de VenenuX. 
 
-## Empecemos
+`apt-get install luajit`
+
+Tal como se menciono **luajit asume un entorno Lua 5.1** debido a la misma razon 
+que se expuso arriba, **al igual que python, entre versiones de Lua 
+hay sumas incompatibilidades**.
+
+# Entorno
+
+Tenemos tres tipos de entornos, y como se menciono es como Java y Python, 
+no genera ejecutables sino codigos intermedios interpretables, asi que hay tres 
+entornos:
+
+* Interprete: `lua` o `lua5.1` o `lua5.3` etc
+* Bycompilter: `luac` o `luac5.1` o `luac5.3` etc
+* Jitcompiler: `luajit`
+
+Dado el JIT es para 5.1 asumiremos siempre 5.1 el entorno:
+
+```
+lua -v
+Lua 5.1.5  Copyright (C) 1994-2012 Lua.org, PUC-Rio
+
+luajit -v
+LuaJIT 2.0.3 -- Copyright (C) 2005-2014 Mike Pall. http://luajit.org/
+```
+
+
+## Guia rapida para impacientes
+
+Para el interprete, el tipico "hola mundo" es:
+
+```
+lua -e "print ('hola mundo 2')"
+```
+
+Para el bycompiler, el tipico "hola mundo" es:
+
+```
+cat > holamundo.lua << EOF
+print ('hola mundo 1')
+EOF
+luac holamundo.lua -o holamundo.luac
+lua holamundo.luac
+```
+
+Para el jitcompiler, se toma lo anterior y es:
+
+```
+luajit -be "print('hola mundo')" holamundo.out  # desde linea comando o sino:
+luajit -b holamundo.lua holamundo.obj    # genera codigo compilado objeto
+ld holamundo.obj holamundo               # enlaza como si fuera un programa c y listo
+./holamundo
+```
+
+Usar variables:
+
+`lua -e "a=1" -e "print(a)"`
+
+Concatenar variables con el print:
+
+`lua -e "a=1" -e "print('La variable a tiene:'..a)"`
+
+Sumar dos numeros:
+
+`lua -e "a=1" -e "b=2" -e "c=a+b" -e "print('La variable c fue:'..c)"`
+
+Pedir una variable al usuario
+
+```
+cat > holamundoingresa.lua << EOF
+print('ingresa numero:'')
+a = io.read('*number')
+print('el numero es:'..a)
+EOF
+lua holamundoingresa.lua
+```
+
+Compliquemosno, avancemos y hagamos recursividad:
+
+```
+cat > ultrapeludoprograma.lua << EOF
+function llamameamimisma (n)
+      if n == 0 then
+        return 1
+      else
+        return n * llamameamimisma(n-1)
+      end
+    end
+    
+    print("ingresa un numero:")
+    a = io.read("*number")
+    print('llamandolo a simismo imprime :'..llamameamimisma(a))
+EOF
+lua ultrapeludoprograma.lua
+```
+
+En este ultimo juntamos todo lo aprendido:
+* usamos variables
+* imprimimos
+* leimos una variable del usuarios
+* y usamos funciones
+
+Adicional hemos empleado calculo matematico avanzado, 
+el numero ingresado lo multiplicamos tantas veces el mismo 
+hasta agotarse el unico ciclo, es decir lo multiplicamos 
+por el mismo (pero restando uno) una vez mas y acto seguido 
+lo imprimimos.
+
+## Guia mas detallada pero larga
 
 Lua es un lenguaje de programación imperativo, estructurado y
 bastante ligero que fue diseñado como un lenguaje interpretado con una semántica extendible.
 
-hagamos el famoso "hola mundo".
 
-```lua
-print("Hola Mundo")
-```
-
-la función `print`, inprime en pantalla lo que esta entre parentesis.
-
-### Comentarios
+#### Comentarios
 
 Los comentarios en lua son los siguientes:
 
@@ -74,7 +242,7 @@ Los comentarios en lua son los siguientes:
 ]]--
 ```
 
-### Variables
+#### Variables
 
 Una variable es una palabra que almacena un valor.
 
@@ -89,7 +257,7 @@ local variable = "local"
 arreglo = {"uno","dos","tres"} -- valores
 ```
 
-### Tipos de datos
+#### Tipos de datos
 
 Lua es un lenguaje dinámicamente tipado. Esto significa que las variables no tienen tipos; sólo tienen tipo
 los valores. No existen definiciones de tipo en el lenguaje. Todos los valores almacenan su propio tipo.
@@ -515,10 +683,10 @@ print("El resultado es ")
 calculadora(a, op, b)
 ```
 
-## Contactos
-- Email: diaz.victor@openmailbox.org
-- Facebook: https://www.facebook.com/DiazUrbanejaVictor
-- Github: https://github.com/diazvictor/
+## Copyright
 
-## NOTA
-tal vez no me explique muy bien que se diga, pero estare puliendo la guía.
+* author: diaz.victor@openmailbox.org
+* modificado para VenenuX: @mckaygerhard
+* Facebook: https://www.facebook.com/DiazUrbanejaVictor
+* Github: https://github.com/diazvictor/
+
