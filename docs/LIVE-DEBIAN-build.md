@@ -129,6 +129,7 @@ lb config \
 --linux-flavours "586" \
 --linux-packages "linux-image linux-headers" \
 --apt-recommends false --apt-secure false \
+--apt-options "--yes -oAcquire::Check-Valid-Until=false" \
 --checksums none \
 --iso-publisher "VENENUX" \
 --binary-images iso-hybrid \
@@ -156,11 +157,23 @@ chmod 700 lb-debian8live
 ./lb-debian8live
 ```
 
-#### 6 adicionar repositorios al live construir
+#### 6 adicionar y configurar repositorios live chroot
+
+* 6.0 permitir cualquier repo
+
+``` bash
+lb config --apt-options "--yes -oAcquire::Check-Valid-Until=false"
+
+cat > config/apt/apt.conf << EOF
+Acquire::Check-Valid-Until "0";
+APT::Install-Recommends "0";
+APT::Install-Suggests "0";
+EOF
+```
 
 * 6.1 VenenuX repositories para voip 
 
-```
+``` bash
 cat > config/archives/venenuxvoip.list.chroot << EOF
 deb http://download.opensuse.org/repositories/home:/vegnuli:/voip/Debian_$(lsb_release -r -s | cut -d '.'  -f1).0/ /
 deb http://download.opensuse.org/repositories/home:/vegnuli:/golang/Debian_$(lsb_release -r -s | cut -d '.'  -f1).0/ /
