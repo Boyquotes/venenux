@@ -44,6 +44,7 @@ EOF
 
 cat > /etc/apt/apt.conf.d/91archivelist << EOF
 Acquire::Check-Valid-Until "0";
+APT::Get::AllowUnauthenticated "true";
 EOF
 
 cat > /etc/apt/preferences.d/debian << EOF
@@ -120,7 +121,7 @@ lb config \
 --debian-installer live --debian-installer-gui true \
 --architecture i386 \
 --archive-areas "main contrib non-free" \
---security true --updates true --backports true \
+--security true --updates false --backports true \
 --parent-mirror-bootstrap http://archive.debian.org/debian \
 --parent-mirror-binary http://archive.debian.org/debian \
 --mirror-bootstrap http://archive.debian.org/debian \
@@ -129,7 +130,7 @@ lb config \
 --linux-flavours "586" \
 --linux-packages "linux-image linux-headers" \
 --apt-recommends false --apt-secure false \
---apt-options "--yes -oAcquire::Check-Valid-Until=false" \
+--apt-options "--yes -oAcquire::Check-Valid-Until=false --allow-unauthenticated" \
 --checksums none \
 --iso-publisher "VENENUX" \
 --binary-images iso-hybrid \
@@ -166,6 +167,7 @@ lb config --apt-options "--yes -oAcquire::Check-Valid-Until=false"
 
 cat > config/apt/apt.conf << EOF
 Acquire::Check-Valid-Until "0";
+APT::Get::AllowUnauthenticated "1";
 APT::Install-Recommends "0";
 APT::Install-Suggests "0";
 EOF
