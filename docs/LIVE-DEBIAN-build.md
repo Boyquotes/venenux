@@ -124,6 +124,7 @@ lb config \
 --parent-mirror-bootstrap http://archive.debian.org/debian \
 --parent-mirror-binary http://archive.debian.org/debian \
 --mirror-bootstrap http://archive.debian.org/debian \
+--debootstrap-options "--include=apt-transport-https" \
 --firmware-chroot true  --firmware-binary true \
 --linux-flavours "586" \
 --linux-packages "linux-image linux-headers" \
