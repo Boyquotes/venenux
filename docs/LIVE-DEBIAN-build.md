@@ -49,38 +49,26 @@ EOF
 
 cat > /etc/apt/preferences.d/debian << EOF
 Package: *
-Pin: origin security.debian.org
-Pin-Priority: 500
-
-Package: *
-Pin: origin archive.debian.org
-Pin-Priority: 500
-
-Package: *
 Pin: release l=Debian-Security
-Pin-Priority: 500
+Pin-Priority: 1002
+
+Package: *
+Pin: release n=$(lsb_release -sc)
+Pin-Priority: 1001
 EOF
 
 cat > /etc/apt/preferences.d/debianbackports << EOF
 Package: *
-Pin: release l="Debian Backports"
+Pin: release n=$(lsb_release -sc)-backports
 Pin-Priority: 500
 
-Package: linux-image*
-Pin: release l="Debian Backports"
-Pin-Priority: -1
+Package: linux-image-* linux-header* linux-compiler-gcc-4.9* 
+Pin: release n=$(lsb_release -sc)
+Pin-Priority: 1003
 
-Package: linux-header*
-Pin: release l="Debian Backports"
-Pin-Priority: -1
-
-Package: linux-compiler-gcc-4*
-Pin: release l="Debian Backports"
-Pin-Priority: -1
-
-Package: live-boot*
-Pin: release l="Debian Backports"
-Pin-Priority: -1
+Package: libsystemd* systemd* libnss-resolve libpam-systemd udev libudev* libnss-mymachines libnss-myhostname
+Pin: release n=$(lsb_release -sc)
+Pin-Priority: 1003
 EOF
 ```
 
@@ -98,7 +86,7 @@ ya que se va ejecutar chroot en el.
 ## Configurar live build
 ---------------------------
 
-#### Crear el directorio de la estructura de el disco live
+#### 3 Crear el directorio de la estructura de el disco live
 
 ``` bash
 mkdir /LIVEBUILD
@@ -117,7 +105,7 @@ lb config \
 --mode debian \
 --system live \
 --interactive shell \
---distribution jessie \
+--distribution $(lsb_release -sc) \
 --debian-installer live --debian-installer-gui true \
 --architecture i386 \
 --archive-areas "main contrib non-free" \
@@ -127,10 +115,10 @@ lb config \
 --mirror-bootstrap http://archive.debian.org/debian \
 --debootstrap-options "--include=apt-transport-https,ca-certificates,openssl" \
 --firmware-chroot true  --firmware-binary true \
---linux-flavours "586" \
+--linux-flavours "486 686-pae" \
 --linux-packages "linux-image linux-headers" \
 --apt-recommends false --apt-secure false \
---apt-options "--yes -oAcquire::Check-Valid-Until=false --allow-unauthenticated" \
+--apt-options "--yes --force-yes -oAcquire::Check-Valid-Until=false --allow-unauthenticated" \
 --checksums none \
 --iso-publisher "VENENUX" \
 --binary-images iso-hybrid \
@@ -163,8 +151,6 @@ chmod 700 lb-debian8live
 * 6.1 permitir cualquier repo
 
 ``` bash
-lb config --apt-options "--yes -oAcquire::Check-Valid-Until=false"
-
 cat > config/apt/apt.conf << EOF
 Acquire::Check-Valid-Until "0";
 APT::Get::AllowUnauthenticated "1";
@@ -174,64 +160,32 @@ EOF
 
 * 6.2 configurar backports y security
 
-cat > config/apt/preferences.d/debian << EOF
+cat > config/archives/debian.pref.chroot << EOF
 Package: *
-Pin: origin security.debian.org
-Pin-Priority: 501
-
-Package: *
-Pin: origin archive.debian.org
+Pin: release n=$(lsb_release -sc)-backports
 Pin-Priority: 500
 
 Package: *
-Pin: release l=Debian-Security
-Pin-Priority: 501
+Pin: release n=$(lsb_release -sc)
+Pin-Priority: 500
+
+Package: linux-image-* linux-header* linux-compiler-gcc-4.9* 
+Pin: release n=$(lsb_release -sc)
+Pin-Priority: 1003
+
+Package: libsystemd* systemd* libnss-resolve libpam-systemd udev libudev* libnss-mymachines libnss-myhostname
+Pin: release n=$(lsb_release -sc)
+Pin-Priority: 1003
 EOF
 
-cat > config/apt/preferences.d/debianbackports << EOF
+cat > config/archives/debian.pref.binary << EOF
 Package: *
-Pin: release l="Debian Backports"
+Pin: release n=$(lsb_release -sc)-backports
 Pin-Priority: 500
 
-Package: linux-image*
-Pin: release l="Debian Backports"
-Pin-Priority: -1
-
-Package: linux-header*
-Pin: release l="Debian Backports"
-Pin-Priority: -1
-
-Package: linux-compiler-gcc-4*
-Pin: release l="Debian Backports"
-Pin-Priority: -1
-
-Package: live-boot*
-Pin: release l="Debian Backports"
-Pin-Priority: -1
-
-Package: libsystemd*
-Pin: release l="Debian Backports"
-Pin-Priority: -1
-
-Package: libudev*
-Pin: release l="Debian Backports"
-Pin-Priority: -1
-
-Package: systemd*
-Pin: release l="Debian Backports"
-Pin-Priority: -1
-
-Package: udev*
-Pin: release l="Debian Backports"
-Pin-Priority: -1
-
-Package: libnss-*
-Pin: release l="Debian Backports"
-Pin-Priority: -1
-
-Package: libpam-systemd*
-Pin: release l="Debian Backports"
-Pin-Priority: -1
+Package: *
+Pin: release n=$(lsb_release -sc)
+Pin-Priority: 500
 EOF
 ```
 
@@ -244,9 +198,11 @@ deb http://download.opensuse.org/repositories/home:/vegnuli:/golang/Debian_$(lsb
 deb http://download.opensuse.org/repositories/home:/vegnuli:/java8/Debian_$(lsb_release -r -s | cut -d '.'  -f1).0/ /
 deb http://download.opensuse.org/repositories/home:/vegnuli:/minetest/Debian_$(lsb_release -r -s | cut -d '.'  -f1).0/ /
 deb http://download.opensuse.org/repositories/home:/vegnuli:/emulators/Debian_$(lsb_release -r -s | cut -d '.'  -f1).0/ /
+deb http://download.opensuse.org/repositories/home:/vegnuli:/multimedia/Debian_$(lsb_release -r -s | cut -d '.'  -f1).0/ /
 deb http://download.opensuse.org/repositories/home:/vegnuli:/devel/Debian_$(lsb_release -r -s | cut -d '.'  -f1).0/ /
 deb http://download.opensuse.org/repositories/home:/vegnuli:/internet/Debian_$(lsb_release -r -s | cut -d '.'  -f1).0/ /
 deb http://download.opensuse.org/repositories/home:/vegnuli:/databases/Debian_$(lsb_release -r -s | cut -d '.'  -f1).0/ /
+deb http://download.opensuse.org/repositories/home:/vegnuli:/qt/Debian_$(lsb_release -r -s | cut -d '.'  -f1).0/ /
 EOF
 ```
 
@@ -254,32 +210,22 @@ EOF
 
 ``` bash
 cat <<EOF> config/archives/marillat.list.chroot 
-deb http://www.deb-multimedia.org jessie main non-free
-deb http://www.deb-multimedia.org jessie-backports main
+deb http://www.deb-multimedia.org $(lsb_release -sc) main non-free
+deb http://www.deb-multimedia.org $(lsb_release -sc)-backports main
 EOF
 
 cat <<EOF> config/archives/marillat.pref.chroot
-# we put all backports and normal debian to 500 so then here 501
 Package: *
 Pin: origin www.deb-multimedia.org
-Pin-Priority: 501
+Pin-Priority: 500
 
-# the rest of packages excetp those must have bad conflicting files, only happened with jessie
-Package: libva*
+Package: vdpau-va-driver libva-dev libva-drm1 libva-egl1 libva-glx1 libva-tpi1 libva-wayland1 libva-x11-1 libva1 va-driver-all vainfo
 Pin: origin www.deb-multimedia.org
-Pin-Priority: -1
+Pin-Priority: 100
 
-Package: vdpau-va*
-Pin: origin www.deb-multimedia.org
-Pin-Priority: -1
-
-Package: va-driver-all
-Pin: origin www.deb-multimedia.org
-Pin-Priority: -1
-
-Package: vainfo
-Pin: origin www.deb-multimedia.org
-Pin-Priority: -1
+Package: vdpau-va-driver libva-dev libva-drm1 libva-egl1 libva-glx1 libva-tpi1 libva-wayland1 libva-x11-1 libva1 va-driver-all vainfo
+Pin: origin archive.debian.org
+Pin-Priority: 1001
 EOF
 ```
 
@@ -294,7 +240,7 @@ EOF
 cat <<EOF> config/archives/nodejs.pref.chroot
 Package: *
 Pin: origin deb.nodesource.com
-Pin-Priority: 501
+Pin-Priority: 502
 EOF
 ```
 
@@ -325,7 +271,7 @@ d-i passwd/user-uid string 1010
 d-i passwd/user-default-groups string audio cdrom video netdev powerdev fuse lp dip floppy games
 d-i clock-setup/ntp boolean false
 d-i netcfg/enable boolean false
-d-i netcfg/get_hostname string venenuxpos
+d-i netcfg/get_hostname string venenux
 d-i netcfg/get_hostname seen false
 d-i partman-auto/choose_recipe select atomic
 d-i partman/mount_style select uuid
@@ -426,7 +372,7 @@ apt-get install console-setup accountsservice user-setup locales
 
 **TEMA DE ESCRITORIO CON MATE/XFCE**
 
-Desde GTK3 y Gnome no se puede usar archivos de configuracion ,asi que se dbe en jessie usar dconf
+Desde GTK3 y Gnome no se puede usar archivos de configuracion ,asi que se debe en jessie usar dconf
 
 
 ```
