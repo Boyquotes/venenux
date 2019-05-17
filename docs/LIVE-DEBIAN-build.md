@@ -160,7 +160,7 @@ chmod 700 lb-debian8live
 
 #### 6 adicionar y configurar repositorios live chroot
 
-* 6.0 permitir cualquier repo
+* 6.1 permitir cualquier repo
 
 ``` bash
 lb config --apt-options "--yes -oAcquire::Check-Valid-Until=false"
@@ -171,9 +171,47 @@ APT::Get::AllowUnauthenticated "1";
 APT::Install-Recommends "0";
 APT::Install-Suggests "0";
 EOF
+
+* 6.2 configurar backports y security
+
+cat > config/apt/preferences.d/debian << EOF
+Package: *
+Pin: origin security.debian.org
+Pin-Priority: 501
+
+Package: *
+Pin: origin archive.debian.org
+Pin-Priority: 500
+
+Package: *
+Pin: release l=Debian-Security
+Pin-Priority: 501
+EOF
+
+cat > config/apt/preferences.d/debianbackports << EOF
+Package: *
+Pin: release l="Debian Backports"
+Pin-Priority: 500
+
+Package: linux-image*
+Pin: release l="Debian Backports"
+Pin-Priority: -1
+
+Package: linux-header*
+Pin: release l="Debian Backports"
+Pin-Priority: -1
+
+Package: linux-compiler-gcc-4*
+Pin: release l="Debian Backports"
+Pin-Priority: -1
+
+Package: live-boot*
+Pin: release l="Debian Backports"
+Pin-Priority: -1
+EOF
 ```
 
-* 6.1 VenenuX repositories para voip 
+* 6.3 VenenuX repositories para voip 
 
 ``` bash
 cat > config/archives/venenuxvoip.list.chroot << EOF
@@ -188,7 +226,7 @@ deb http://download.opensuse.org/repositories/home:/vegnuli:/databases/Debian_$(
 EOF
 ```
 
-* 6.2 debian multimedia marillat
+* 6.4 debian multimedia marillat
 
 ``` bash
 cat <<EOF> config/archives/marillat.list.chroot 
@@ -221,7 +259,7 @@ Pin-Priority: -1
 EOF
 ```
 
-* 6.3 Nodejs 8 y 10
+* 6.5 Nodejs 8 y 10
 
 ```
 cat > config/archives/nodejs.list.chroot  << EOF
@@ -302,10 +340,10 @@ a un entorno chroot, este es el interactive shell
 Escritorio base y cups
 
 ``` bash
-apt-get install task-ssh-server task-laptop laptop-mode-tools task-print-server acpi bluetooth 
-apt-get install net-tools udev wireless-tools dialog dbus
-apt-get install xdg-user-dirs-gtk xdg-utils sakura
-apt-get install xcowsay cowsay fortunes fortunes-bofh-excuses fortunes-es fortunes-es-off fortunes-ru
+apt-get install -y --force-yes task-ssh-server task-laptop laptop-mode-tools task-print-server
+apt-get install -y --force-yes net-tools udev wireless-tools dialog dbus acpi bluetooth 
+apt-get install -y --force-yes xdg-user-dirs-gtk xdg-utils sakura
+apt-get install -y --force-yes xcowsay cowsay fortunes fortunes-bofh-excuses fortunes-es fortunes-es-off fortunes-ru
 ```
 
 Escritorio mate
