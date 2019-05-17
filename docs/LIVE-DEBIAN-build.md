@@ -208,6 +208,30 @@ Pin-Priority: -1
 Package: live-boot*
 Pin: release l="Debian Backports"
 Pin-Priority: -1
+
+Package: libsystemd*
+Pin: release l="Debian Backports"
+Pin-Priority: -1
+
+Package: libudev*
+Pin: release l="Debian Backports"
+Pin-Priority: -1
+
+Package: systemd*
+Pin: release l="Debian Backports"
+Pin-Priority: -1
+
+Package: udev*
+Pin: release l="Debian Backports"
+Pin-Priority: -1
+
+Package: libnss-*
+Pin: release l="Debian Backports"
+Pin-Priority: -1
+
+Package: libpam-systemd*
+Pin: release l="Debian Backports"
+Pin-Priority: -1
 EOF
 ```
 
