@@ -21,7 +21,13 @@ links
 bash-completion
 gawk
 antiword
-#docx2txt
+task-laptop
+task-ssh-server
+#if PARENT_DISTRIBUTION wheezy
+console-tools
+#endif
+debian-installer-launcher
+sudo
 
 # idiomas ru, es, de, gr
 task-cyrillic
@@ -64,6 +70,15 @@ fusefat
 fuseiso9660
 caca-utils
 console-setup
+task-lxde-desktop
+task-print-server
+plymouth
+plymouth-x11
+i965-va-driver
+#nif PARENT_DISTRIBUTION wheezy
+plymouth-drm
+#endif
+
 
 # openbox
 menu-xdg
