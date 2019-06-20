@@ -7,7 +7,11 @@ Repositorio de documentacion y tareas para construir iso venenux.
 * docs/README.md : General information
 * [docs/README.packages.md](docs/README.packages.md) : package list inclusion.
 
-## Dcos Guides / Docus Guias
+## Live CD
+
+* [docs/LIVE-DEBIAN-build.md](docs/LIVE-DEBIAN-build.md) guia para construir Live VenenuX Debian
+
+## Docs Guides / Docus Guias
 
 * [docs/VNXDOCS-DISC-clone-partition-partclone](docs/VNXDOCS-DISC-clone-partition-partclone.md) clonar w32/w64 os con partclone.
 * [docs/VNXDOCS-DISC-clone-partition-ntfsclone](docs/VNXDOCS-DISC-clone-partition-ntfsclone.md) clonar w32/w16 os con ntfsclone.

@@ -11,6 +11,10 @@ tome en consideracion que la documentacion pincipal es en español, algunas en i
 actualmente al 2018-01 es un trabajo en progreso, pero mucho del material esta en las listas, 
 por favor visita el foro en https://groups.google.com/forum/m/#!forum/venenuxsarisari
 
+## Live disck work VenenuX
+
+* [LIVE-DEBIAN-build.md](LIVE-DEBIAN-build.md) Live cd how to / Guia live cd debian
+
 ## List of documentation usefull guides
 
 * [VNXDOCS-DISC-clone-partition-partclone](VNXDOCS-DISC-clone-partition-partclone.md) clonar w32/w64 os con partclone.
@@ -32,6 +36,7 @@ en servidores pequeños o escritorios pequeños.
 
 # TODO:
 
+- [LIVE-DEBIAN-build.md](docs/LIVE-DEBIAN-build.md) Live cd how to / Guia live cd debian
 - [X] Fix and restart the older webpage: venenux.net/venenux.needthis.net
 - [ ] fix and update the restarted webpage: http://venenux.sourceforge.io
 - [ ] set new admin password based on old seed in intranet
