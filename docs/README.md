@@ -17,6 +17,19 @@ por favor visita el foro en https://groups.google.com/forum/m/#!forum/venenuxsar
 * [VNXDOCS-DISC-clone-partition-ntfsclone](VNXDOCS-DISC-clone-partition-ntfsclone.md) clonar w32/w16 os con ntfsclone.
 * [VNXDOCS-DISC-clone-partition-partimage](VNXDOCS-DISC-clone-partition-partimage.md) clonar cualquier os con partimage.
 
+## Documentacion VirtualBox para Debian y VenenuX
+
+Los siguientes documentos incian y ayudan configurar, preparar y ajustar 
+el software VirtualBox para emulacion de varias virtuales, ya que hoy dia 
+este programa esta en buen nivel de uso para pequeñas maquinas virtualizadas 
+en servidores pequeños o escritorios pequeños.
+
+1. [virtualbox1essentials.md](virtualbox1essentials.md) Lo inicia, explica y dice que instalar.
+2. [virtualbox2serviciosvirtuales.md](virtualbox2serviciosvirtuales.md) Detalla como crear sin graficos virtuales.
+3. [virtualbox3gurumeditation.md](virtualbox3gurumeditation.md) Explica algunos problemas mas raros en estas.
+4. [virtualbox4montarvdivmdk.md](virtualbox4montarvdivmdk.md) Dice como extraer datos sin arrancar las virtuales.
+5. [virtualbox5scriptsactivas.md](virtualbox5scriptsactivas.md) Avanza como automatizar las virtuales en un server.
+
 # TODO:
 
 - [X] Fix and restart the older webpage: venenux.net/venenux.needthis.net
