@@ -1,4 +1,4 @@
-# receta para instalacion Debian 10 para trbajar tijerazo, aliss, pacific
+# Debian 10 VenenuX X
 ===========================================================
 
 Debian 10 es especial porque cambios fuertes.. como `calamares` el instalador, 
