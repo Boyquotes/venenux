@@ -107,16 +107,18 @@ sed -i -r 's#127.0.1.1.*#127.0.1.1  pcr-amd64-deb10-1#g' /etc/hosts
 
 #### escalado privilegios de su
 
-Hay que colocar una clave a la cuenta de root, asi:
+Hay que colocar una clave a la cuenta de root, asi -> `passwd` y despues 
+**pregunta dos veces por clave, al escribirla no saldra nada...es invisible!**
 
 ```
-sudo su
-passwd
 cp /bin/su /bin/miluser
 chmod o-rxw /bin/su
 chmod g-rxw /bin/su
 chmod u+rxws /bin/miluser
 ```
+
+**ADVERTENCIA** esto prermite que su "no exista para usuario pero si para root" 
+el usuario root necesita "su" porque muchos servicios emplean esto
 
 #### Independencia de sudo
 
