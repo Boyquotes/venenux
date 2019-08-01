@@ -10,6 +10,7 @@ se centra en el escritorio LXDE y MATE es decir solo apariencia GTK unicamente.
 * [Configurar el Sistema](#configurar-el-sistema)
 * [Programas repositorios y paquetes](#programas-repositorios-y-paquetes)
 * [Escritorios LXDE y MATE](#escritorios-lxde-y-mate)
+  * [Internet con VPN y comunicacion de chats](#internet-con-vpn-y-comunicacion-de-chats)
 * [Gestion remota](#gestion-remota)
   * [nomachine y anydesk](#nomachine-y-anydesk)
 * [Desarrollo LAMP web](#desarrollo-lamp-web)
@@ -18,6 +19,8 @@ se centra en el escritorio LXDE y MATE es decir solo apariencia GTK unicamente.
 * [Juegos y diversion](#juegos-y-diversion)
   * [Ajedrez](#ajedrez)
   * [Emuladores](#emuladores)
+* [ANEXOS repos y extras](#anexos-repos-y-extras)
+  * [Debian y los ppa](#debian-y-los-ppa)
 
 # Debian 10 - descargas y disponibles
 
@@ -264,7 +267,45 @@ apt-get -y --force-yes install sinple-scan \
  pcmanfm gvfs-backends gvfs-fuse libfm-modules libfm-tools
 ```
 
+#### Internet con VPN y comunicacion de chats
+
+En debian aunque hay muchos navegadores web solo dos sabemos abriran cualqueir pagina, 
+ademas tambien se puede **agregar chrome aparte de firefox y chromium**
+
+**ADVERTENCIA** esto depende de los repositorios aqui configurados multimedia
+
+Conectividad y VPN:
+
+```
+apt-get -y --force-yes install \
+network-manager network-manager-config-connectivity-debian \
+mobile-broadband-provider-info usb-modeswitch-data \
+usb-modeswitch modemmanager crda pptp-linux vpnc-scripts \
+network-manager-strongswan strongswan \
+network-manager-pptp network-manager-pptp-gnome \
+network-manager-l2tp network-manager-l2tp-gnome \
+network-manager-vpnc network-manager-vpnc-gnome vpnc \
+network-manager-openvpn network-manager-openvpn-gnome openvpn \
+network-manager-openconnect network-manager-openconnect-gnome openconnect \
+network-manager-fortisslvpn network-manager-fortisslvpn-gnome openfortivpn \
+strongswan-nm
+```
+
+Navegacion internet y chat:
+
+```
+apt-get -y --force-yes install \
+ chromium chromium-sandbox chromium-l10n flasplayer-chromium \
+ firefox-esr libavcodec58 libcanberra0 firefox-esr-l10n-es* flasplayer-mozilla \
+ webext-https-everywhere
+ pidgin pidgin-plugin-pack pidgin-encryption pidgin-extprefs \
+ pidgin-skype pidgin-guifications finch pidgin-mpris purple-discord
+ telegram-desktop
+```
+
 #### Multimedia
+
+**ADVERTENCIA** esto depende de los repositorios aqui configurados multimedia
 
 ```
 apt-get -y --force-yes install ffmpeg ffplay ffhevc ffx264 ffxvid lame \
@@ -281,6 +322,8 @@ apt-get -y --force-yes install ffmpeg ffplay ffhevc ffx264 ffxvid lame \
 ```
 
 #### Ediccion audio y video
+
+**ADVERTENCIA** esto depende de los repositorios aqui configurados multimedia
 
 ```
 apt-get install smplayer qmmp udisk2 gmpt gnomad2 gtkpod \
@@ -314,12 +357,12 @@ dpkg -i anydesk_5.1.0-1_amd64.deb
 
 ```
 apt-get -y install openssh-server openssh-client
-sed -i -r 's#.*Port 22.*#Port 19226#g' /etc/ssh/sshd_config
+sed -i -r 's#.*Port 22.*#Port 1922#g' /etc/ssh/sshd_config
 sed -i -r 's#PermitRootLogin.*#PermitRootLogin no#g' /etc/ssh/sshd_config
 /usr/sbin/service ssh restart
 ```
 
-**ADVERTENCIA** ESTO HARA QUE SSH REQUIERA SIEMPRE USAR `-p 19226` PARA USAR SU MAQUINA REMOTAMENTE!
+**ADVERTENCIA** ESTO HARA QUE SSH REQUIERA SIEMPRE USAR `-p 1922` PARA USAR SU MAQUINA REMOTAMENTE!
 
 **IMPORTANTE** es una medida de seguridad.
 
@@ -536,6 +579,8 @@ apt-get install numptyphysics hex-a-hop gnome-mines gnome-sudoku gnome-nibbles g
 
 #### Ajedrez
 
+Esta seccion es minimalista, ajedrez requiere para stockfish configurar polypo
+
 ```
 apt-get install gnome-chess hoichess gnuchess-book fairmax
 ```
@@ -590,3 +635,15 @@ Los siguientes emuladores no son recomendados debido a los detalles mostrados o 
 * (e) emulacion no completa por ser mas windosero funciona limitado
 * (i) incomodo y dificil de configurar adicional no muy integrado al sistema
 
+## ANEXOS repos y extras
+ 
+
+#### Debian y los ppa
+
+VenenuX tiene un buen documento para aquellos que deseen experimentar mexclando paquetes, 
+el siguiente documento intenta orientar cuando puede mexclar repositorios de otras 
+distros basadas en Debian de las mas populares..
+
+[Debian repositorios ppa equivalentes](z-guides-packages-debian-repository-ppa-equivalent.md)
+
+**IMPORTANTE** nunca sustituya paquetes core como `libc6`, `udev` o `dbus` !
