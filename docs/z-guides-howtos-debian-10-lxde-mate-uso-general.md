@@ -568,7 +568,7 @@ para mejores opciones se recomienda usar "VenenuX emulation X"
 apt-get install mednafe mednafen desmume pcsxr mupen64plus-ui-console cen64 yabause blastem
 ```
 
-Los siguientes emuladores no son recomendados debido a los detalles mostrados:
+Los siguientes emuladores no son recomendados debido a los detalles mostrados o por consumir muchos recursos:
 
 | emulador/emula:  | ata | pce | nes | snes | smd | sms | sgg | gba| gbc | n64 | psx | satr | ngp | ngc | nds | wii | ws | wsc |
 | ---------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -581,10 +581,11 @@ Los siguientes emuladores no son recomendados debido a los detalles mostrados:
 | mgba (*)         |     |     |     |     |     |     |     |  x  |  x  |     |     |     |     |     |     |     |     |     |
 | nestopia (i)     |     |     |  x  |     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
 | stella (i)       |  x  |     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
-| mame (*)         |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |     |     |     |
 
 * osmose es ridiculo requiriendo qt5 solo para emular consolas tan pobres
-* (*) rendimiento pobre porque consume muchisimos recursos, por ende no se instalan aqui
+* retroarch (libretro) es muy completo y configurable pero requiere buena maquina
+* higan es muy configurable pero requiere buena grafica
+* (*) rendimiento pobre porque consume muchisimos recursos en maquinas potente es buena opcion
 * (**) requiere modulos extras que no son iguales que su original
 * (e) emulacion no completa por ser mas windosero funciona limitado
 * (i) incomodo y dificil de configurar adicional no muy integrado al sistema
