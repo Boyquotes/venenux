@@ -14,6 +14,10 @@ se centra en el escritorio LXDE y MATE es decir solo apariencia GTK unicamente.
   * [nomachine y anydesk](#nomachine-y-anydesk)
 * [Desarrollo LAMP web](#desarrollo-lamp-web)
 * [Desarrollo chaintoolkit C y Go](#desarrollo-chaintoolkit-c-y-go)
+* [Desarrollo chaintoolkit C y Go](#desarrollo-chaintoolkit-c-y-go)
+* [Juegos y diversion](#juegos-y-diversion)
+  * [Ajedrez](#ajedrez)
+  * [Emuladores](#emuladores)
 
 # Debian 10 - descargas y disponibles
 
@@ -527,29 +531,61 @@ asi que solo se listas cosas pequeñas de rapido uso:
 #### buscaminas maghong y hex-a-hop
 
 ```
-apt-get install hex-a-hop gnome-mines gnome-sudoku gnome-nibbles gnome-mahjong funnyboat gamine
+apt-get install numptyphysics hex-a-hop gnome-mines gnome-sudoku gnome-nibbles gnome-mahjong gamine
 ```
 
-#### ajedrez
+#### Ajedrez
 
 ```
 apt-get install gnome-chess hoichess gnuchess-book fairmax
 ```
 
-#### multiemuladores
+#### Emuladores
+
+Dosbox emulara MSDOS pero virtualbox es extremo pesado dado usa qt5, se recomienda qemu pero es dificil de configurar
+
+```
+apt-get install simh dosbox qemu-system-gui qemu-system-x86 qemu-user qemu-binfmt qemu-utils
+```
 
 Mednafen provee todo lo necesario y escala perfecto con muchos filtros, 
 su configuracion es homogenea y tieen un interfaz grafica, quedando solo 
-uno que otr mas avanzado:
+uno que otro mas avanzado.
+Este cuadropresenta usando los paquetes Debian oficiales los sistemas emulados, 
+para mejores opciones se recomienda usar "VenenuX emulation X"
 
-| emulador/emula: | atary | pce | nes | snes | smd | sms | sgg | gba| gbc | n64 | psx | satr | ngp | ngc | 
-| --------------- | ----- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| desmume         |       |     |     |     |     |     |     |     |     |     |     |  x  |     |     |
-| mednafen        |   x   |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |     |  x  |     |  x  |  x  |
-| pcsxr           |       |     |     |     |     |     |     |     |     |     |  x  |     |     |     |
-| mupen64plus     |       |     |     |     |     |     |     |     |     |  x  |     |     |     |     |
+| emulador/emula: | ata | pce | nes | snes | smd | sms | sgg | gba | gbc | n64 | psx | satr | ngp | ngc | nds | ws | wsc |
+| --------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| blastem         |     |     |     |     |  x  |  x  |  x  |     |     |     |     |  x  |     |     |     |     |     |
+| desmume         |     |     |     |     |     |     |     |     |     |     |     |     |     |     |  x  |     |     |
+| mednafen        |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |     |  x  |     |  x  |  x  |     |  x  |  x  |
+| pcsxr           |     |     |     |     |     |     |     |     |     |     |  x  |     |     |     |     |     |     |
+| mupen64plus     |     |     |     |     |     |     |     |     |     |  x  |     |     |     |     |     |     |     |
+| cen64 (DD64)    |     |     |     |     |     |     |     |     |     |  x  |     |     |     |     |     |     |     |
+| yabause         |     |     |     |     |     |     |     |     |     |     |     |  x  |     |     |     |     |     |
 
 ```
-apt-get install mednafe mednafen desmume pcsxr mupen64plus-ui-console
+apt-get install mednafe mednafen desmume pcsxr mupen64plus-ui-console cen64 yabause blastem
 ```
+
+Los siguientes emuladores no son recomendados debido a los detalles mostrados:
+
+| emulador/emula:  | ata | pce | nes | snes | smd | sms | sgg | gba| gbc | n64 | psx | satr | ngp | ngc | nds | wii | ws | wsc |
+| ---------------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| osmose-emulator  |     |     |     |     |  x  |  x  |  x  |     |     |     |     |     |     |     |     |     |     |
+| higan (*)        |     |  x  |  x  |  x  |     |  x  |  x  |  x  |  x  |     |     |     |     |     |     |     |  x  |  x  |
+| mame (*)         |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |     |  x  |  x  |
+| libretro (*)(**) |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |     |  x  |  x  |
+| dolphin-emu (e)  |     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |  x  |     |     |
+| hatary (i)       |  x  |     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
+| mgba (*)         |     |     |     |     |     |     |     |  x  |  x  |     |     |     |     |     |     |     |     |     |
+| nestopia (i)     |     |     |  x  |     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
+| stella (i)       |  x  |     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
+| mame (*)         |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |     |     |     |
+
+* osmose es ridiculo requiriendo qt5 solo para emular consolas tan pobres
+* (*) rendimiento pobre porque consume muchisimos recursos, por ende no se instalan aqui
+* (**) requiere modulos extras que no son iguales que su original
+* (e) emulacion no completa por ser mas windosero funciona limitado
+* (i) incomodo y dificil de configurar adicional no muy integrado al sistema
 
