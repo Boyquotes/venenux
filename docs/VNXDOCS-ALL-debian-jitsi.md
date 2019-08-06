@@ -3,6 +3,9 @@
 La parte servidor se llama jitsi-meet, mientras que lo que se conoce como "jitsi" 
 solo es el cliente de escritorio o de mobiles.
 
+Se recomienda lectura previa de [VNXDOCS-VOIP-README.md](VNXDOCS-VOIP-README.md)
+
+
 # Introduccion y Jitsi respecto xmpp y webserver
 
 El software jitsi comprende 5 componentes:
@@ -262,3 +265,8 @@ org.jitsi.videobridge.NAT_HARVESTER_LOCAL_ADDRESS=<Local.IP.Address>
 org.jitsi.videobridge.NAT_HARVESTER_PUBLIC_ADDRESS=<Public.IP.Address>
 ```
 
+# Vease tambien
+
+* [VNXDOCS-VOIP-README.md](VNXDOCS-VOIP-README.md)
+* [z-guides-howtos-debian-asterisk-basic.md](z-guides-howtos-debian-asterisk-basic.md)
+* [z-guides-howtos-debian-kamailio-rtpproxy-mariadb.md](z-guides-howtos-debian-kamailio-rtpproxy-mariadb.md)

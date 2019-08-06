@@ -1,6 +1,10 @@
 ## Guía basica de lua
 
-en esta guía aprenderemos lo basico de lua.
+En esta guía aprenderemos lo basico de lua. Para otras guias y documentacion de VenenuX 
+refierase al documento de iniciados [VNXDOCS-ALL-debian-developer-newbie-es.md](VNXDOCS-ALL-debian-developer-newbie-es.md)
+
+Tenga en cuenta que tambien hay un documento para alpine cortesia del equipo VenenuX en 
+el sitio https://mckayemu.github.io/alpineinstalls/documentos/alpine-lua-developers-intro
 
 * [Acerca de Lua](#acerca-de-lua)
   * [Para que sirve](#para-que-sirve)
@@ -690,3 +694,7 @@ calculadora(a, op, b)
 * Facebook: https://www.facebook.com/DiazUrbanejaVictor
 * Github: https://github.com/diazvictor/
 
+# Vease tambien
+
+* [README.md (indice)](README.md)
+* [VNXDOCS-ALL-debian-developer-newbie-es.md](VNXDOCS-ALL-debian-developer-newbie-es.md)

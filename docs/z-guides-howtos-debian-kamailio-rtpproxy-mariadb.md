@@ -14,11 +14,15 @@ como en la configuracion de kamailio (y el `SIPDOMAIN` en el archivo config),
 
 ### 1. Instalation de paquetes necesarios
 
+Aqui se asume Debian 8 jessie, pero funciona tambien para Debian 7, y Debian 9, 
+si falla algun paso integrese al grupo https://groups.google.com/forum/m/#!forum/venenuxsarisari 
+o registrese al grupo de correos: `venenuxsarisari at googlegroups.com`
+
 Automaticamente aunque se tiene kamailio 4.4 y 5.1 al realizar la instalacion 
-se seleccionara el mas nuevo disponible para la versin de Debian usada:
+se seleccionara el mas nuevo disponible para la version de Debian usada:
 
 ```
-apt-get install  lsb-release 
+apt-get install lsb-release 
 
 cat > /etc/apt/sources.list.d/debianoficial.list << EOF
 deb http://archive.debian.org/debian $(lsb_release -s -c) main contrib non-free
@@ -32,7 +36,9 @@ apt-get instal apt-transport-https
 cat > /etc/apt/sources.list.d/debianbackports.list << EOF
 deb http://ftp.de.debian.org/debian $(lsb_release -s -c)-backports main contrib non-free
 EOF
+
 apt-get update
+
 apt-get -y install wget less groff bzip2 lrzip lzop lsof linux-base ca-certificates curl nmap iproute2 netstat
 
 wget -nv https://download.opensuse.org/repositories/home:vegnuli:voip/Debian_$(lsb_release -r -s | cut -d '.'  -f1).0/Release.key -O Release.key
@@ -40,6 +46,7 @@ apt-key add - < Release.key
 cat > /etc/apt/sources.list.d/debianvenenuxvoip.list << EOF
 deb http://download.opensuse.org/repositories/home:/vegnuli:/voip/Debian_$(lsb_release -r -s | cut -d '.'  -f1).0/ /
 EOF
+
 apt-get update
 
 apt-get -y install mariadb-server mariadb-client unixodbc libmyodbc net-tools gawk
@@ -69,7 +76,9 @@ TODO: tema de clave y config minima mysql/mariadb
 ### 3. Configurar rtpproxy
 
 Se usara socket unix, el cual evita trafico innecesario por la interfaces de red, 
-obteniendo rendimiento extra ya que ambos software estan en la misma maquina:
+obteniendo rendimiento extra **ya que ambos software estan en la misma maquina**:
+
+**ADVERTENCIA** en esta guia para kamailio esta el usuario `kamailio` igual para `rtpproxy`
 
 ```
 service rtpproxy stop
@@ -110,7 +119,7 @@ export ipdefdev=$(netstat -rn | awk '/^0.0.0.0/ {thif=substr($0,74,10); print th
 export ipdefval=$(/sbin/ifconfig $ipdefdev | grep 'Link ' -A 2 -B 2|grep 'inet' | grep -v 'inet6' | cut -d' ' -f12|cut -d'r' -f2|cut -d':' -f2)
 export palabrasecret=secreto
 
-#sed "/^[# ]*SIP_DOMAIN/cSIP_DOMAIN=$ipdefval" -i /etc/kamailio/kamctlrc
+sed "/^[# ]*SIP_DOMAIN/cSIP_DOMAIN=$ipdefval" -i /etc/kamailio/kamctlrc
 sed '/^[# ]*DBENGINE/cDBENGINE=MYSQL' -i /etc/kamailio/kamctlrc
 sed '/^[# ]*DBHOST/cDBHOST=localhost' -i /etc/kamailio/kamctlrc
 sed '/^[# ]*DBNAME/cDBNAME=kamailiosip' -i /etc/kamailio/kamctlrc
@@ -122,7 +131,7 @@ sed '/^[# ]*DBROOTUSER/cDBROOTUSER="root" ' -i /etc/kamailio/kamctlrc
 sed '/^[# ]*INSTALL_EXTRA_TABLES/cINSTALL_EXTRA_TABLES=yes ' -i /etc/kamailio/kamctlrc
 sed '/^[# ]*INSTALL_PRESENCE_TABLES/cINSTALL_PRESENCE_TABLES=yes ' -i /etc/kamailio/kamctlrc
 sed '/^[# ]*INSTALL_DBUID_TABLES/cINSTALL_DBUID_TABLES=yes ' -i /etc/kamailio/kamctlrc
-#sed "s/^#[ ]\(STANDARD_MODULES=.*\)/\1/" -i /etc/kamailio/kamctlrc
+sed "s/^#[ ]\(STANDARD_MODULES=.*\)/\1/" -i /etc/kamailio/kamctlrc
 #sed "s/^#[ ]\(EXTRA_MODULES=.*\)/\1/" -i /etc/kamailio/kamctlrc
 
 kamdbctl create
@@ -149,6 +158,8 @@ Mencionar que modulos usar en `kamailio.cfg` primeras lineas explicadas:
 Los comandos segun el orden de lo explicado:
 
 
+**ADVERTENCIA** si se corren mas de vez duplican los valores, pendiente comando extra para evitar fallar (WIP)
+
 ```
 sed 's/^[# ]*Several/#!define WITH_TLS\n&/g' -i /etc/kamailio/kamailio.cfg
 sed 's/^[# ]*Several/#!define WITH_USRLOCDB\n&/g' -i /etc/kamailio/kamailio.cfg
@@ -156,8 +167,6 @@ sed 's/^[# ]*Several/#!define WITH_NAT\n&/g' -i /etc/kamailio/kamailio.cfg
 sed 's/^[# ]*Several/#!define WITH_AUTH\n&/g' -i /etc/kamailio/kamailio.cfg
 sed 's/^[# ]*Several/#!define WITH_MYSQL\n&/g' -i /etc/kamailio/kamailio.cfg
 ```
-TODO: si se corren mas de vez duplican los valores, pendiente comando extra para evitar fallar
-
 
 Apuntar a la base de datos preconfigurada, recordemos usamos mysql, sino cambiar a psql:
 
@@ -206,6 +215,10 @@ sed "s|require_certificate =.*|require_certificate = yes|g" -i /etc/kamailio/tls
 **4.4 Configurar y Habilitar el servicio:**
 
 Habilitar el servicio:
+
+**ADVERTENCIA** a partir de Debian 10 esto no afecta debido a que se usa `systemd`
+
+**ADVERTENCIA** en esta guia para kamailio esta el usuario `kamailio`
 
 ```
 sed "s|.*RUN_KAMAILIO=.*|RUN_KAMAILIO=yes|g" -i /etc/default/kamailio
@@ -282,3 +295,8 @@ WIP/TODO:
 
 http://kb.asipto.com/kamailio:skype-like-service-in-less-than-one-hour#jitsi_installation
 
+# Vease tambien
+
+* [VNXDOCS-VOIP-README.md](VNXDOCS-VOIP-README.md)
+* [z-guides-howtos-debian-asterisk-basic.md](z-guides-howtos-debian-asterisk-basic.md)
+* [VNXDOCS-ALL-debian-jitsi.md](VNXDOCS-ALL-debian-jitsi.md)

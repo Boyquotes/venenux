@@ -17,6 +17,10 @@ Repositorio de documentacion y tareas para construir iso venenux.
 * [docs/VNXDOCS-DISC-clone-partition-ntfsclone](docs/VNXDOCS-DISC-clone-partition-ntfsclone.md) clonar w32/w16 os con ntfsclone.
 * [docs/VNXDOCS-DISC-clone-partition-partimage](docs/VNXDOCS-DISC-clone-partition-partimage.md) clonar cualquier os con partimage.
 
+## VOIP en VenenuX e introduccion a PBX
+
+* [docs/VNXDOCS-VOIP-README.md](docs/VNXDOCS-VOIP-README.md)
+
 ## VirtualBox Debian y VenenuX
 
 Los siguientes documentos incian y ayudan configurar, preparar y ajustar 

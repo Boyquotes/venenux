@@ -1,4 +1,4 @@
-# VOIP en VenenuX
+# VOIP en VenenuX y Debian
 
 **ADVERTENCIA** Para esto hay que tener claro conceptos minimos de **redes**.
 
@@ -36,25 +36,28 @@ y distribuir la carga en multiples servidores de central de telefonia como las o
 
 # Introduccion a VoIP
 
-**VoIP**, (Voice over IP o Voz sobre IP pro sus siglas en ingles) es el **mundo y estandares** que 
+**VoIP**, (Voice over IP o Voz sobre IP por sus siglas en ingles) es el **mundo y estandares** que 
 define "logica" (protocolos) y "sistemas" (software/hardware) para encaminar la transmisión 
 de "flujos" (streaming, multimedia, voz, datos) a través de Internet (la red de conmutación de paquetes) 
 basado en el protocolo TCP/IP para el envío de información.
 
 Todos los protocolos usados en el mundo VoIP son similares al protocolo HTTP, 
-emplean el mismo concepto basado en petición-respuesta (request-response).
+emplean el mismo concepto basado en petición-respuesta (request-response) dado 
+emplean la filosofia cliente-servicio (server-client) aunque no multidireccional.
 
 Se compone de dos grandes ramas entre **SIP** y **h.323**, mas abajo una comparativa.
 
 ## Servicios
 
-Dado este documento es para poder compenetrarse con kamailio y asterisk, hay que **aclarar que Kamailio es un artefacto mas de Redes Class 4 con trabajos del tipo ‘enrutamiento’ mientras que ASterisk es artefacto de Redes Class 5 considerado como servicio de suscriptores…**
+Dado este documento es para poder compenetrarse con kamailio y asterisk, hay que **aclarar 
+que Kamailio es un artefacto mas de Redes Class 4 con trabajos del tipo ‘enrutamiento’ 
+mientras que ASterisk es artefacto de Redes Class 5 considerado como servicio de suscriptores…**
 
 ## H.323
 
-Es una norma estandarizada en la industria aprobada por la Unión Internacional de Telecomunicaciones (UIT) 
-para compatibilidad en las transmisiones de videoconferencia por redes, desarrollado en 
-una epoca donde las comunicaciones confrontaban serios retos de rendimeinto.
+Fue realizado en una epoca donde las comunicaciones confrontaban serios retos de rendimeinto.
+Una norma estandarizada en la industria por la Unión Internacional de Telecomunicaciones (UIT) 
+para compatibilidad en las transmisiones de videoconferencia por redes.
 
 ## SIP
 
@@ -72,10 +75,11 @@ de comunicación puede comunicarse unos con otros sobre la red IP.
 
 ## RTP y RTSP
 
-Son protocolos para manejo de multimedia, audio, video, desarrollados por la IETF.
+Son protocolos para manejo de multimedia mas amplia: audio y video, desarrollados por la IETF, 
+teniendo en cuenta que la voz es un espectro especifico de la multimedia
 
 **RTP** (Real-Time Transmission Protocol o Protocolo de transmicion en tiempo real por sus siglas), 
-es el mas usado una vez establecida la sesion (relacion) **entre dos o mas usuarios**.
+es el mas usado una vez establecida la sesion (relacion) **entre dos o mas usuarios**.(suscriptores).
 
 **RTSP** (Real-Time Streaming Protocols o Protocolo de transmision de flujos en teimpo real),
 es usado para "flujos" multimedia en una sesion establecida **entre dos o mas partes** (dispositivos).
@@ -87,6 +91,8 @@ el "flujo"  va por RTSP sobre SIP, SIP maneja este intercambio definiendo y usan
 
 ## SIP vs h.323
 
+Dado en los primeros dias las redes eran lentas y los programas asumian correcion de datos, 
+el mundo hoy dia tiene un protocolo moderno y otro antiguo de como realizar el inicio de transporte.
 SIP fue desarrollado por el IETF ( RFC 3261) como evolucion al protocolo H.323 en el mundo VoIP.
 
 |   topico      |              SIP                     |             H.323                 |
@@ -164,13 +170,13 @@ SIP establece y/o finaliza las sesiones multimedia (negociación, localización,
       y traducción de direcciones en el dominio (red de telefonos) que controla.
 
 
-## Servidor SIP: Kamailio
+## VOIP 1 - Servidor SIP: Kamailio
 
 Kamailio es un router SIP en el núcleo (un encaminador de paquetes SIP a el propio servicio). 
 Esto significa que trabaja en la capa inferior de paquetes SIP, enrutando todos y cada uno de 
 los mensajes SIP que recibe basándose en las políticas especificadas en el archivo de configuración.
 
-El nombre inicial del proyecto era SIP Express Router (alias SER)
+El proyecto inicial era SIP Express Router (alias SER), de alli nacio OpenSER y despues Kamailio.
 
 Es **importante entender que no es un motor de telefonía en su núcleo, una llamada VoIP es vista 
 como una secuencia de mensajes SIP** que comparten los mismos atributos **para el llamador, el receptor 
@@ -197,7 +203,7 @@ que ninguna llamada se quede "en el aire" y se tenga alta disponibilidad.
 servicio SIP se encarga de "repartir" entre los distintos servidores PBX las llamadas.
 
 
-## Servidor PBX: Asterisk
+## VOIP 2 - Servidor PBX: Asterisk
 
 Asterisk es un servicio PBX de codigo abierto, permite interconectar telefonos 
 y conectar dichos telefonos a la red telefónica convencional. Es el componente 
@@ -212,7 +218,8 @@ actuando como "registrar" o como "gateway" o entre telefónos IP y la red telef�
 
 ## Ejemplo kamailio+asterisk
 
-(WIP)
+Software como FreeSwicht emplean esto y siremis. La mayoria de productos como ELASTIK y FONAX 
+son asterisk+kamailio integrados en una caja que ellos venden.
 
 ## Seguridad en SIP
 

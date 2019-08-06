@@ -11,11 +11,11 @@ tome en consideracion que la documentacion pincipal es en español, algunas en i
 actualmente al 2018-01 es un trabajo en progreso, pero mucho del material esta en las listas, 
 por favor visita el foro en https://groups.google.com/forum/m/#!forum/venenuxsarisari
 
-## Live disck work VenenuX
+## Live disc work VenenuX Debian
 
 * [LIVE-DEBIAN-build.md](LIVE-DEBIAN-build.md) Live cd how to / Guia live cd debian
 
-## List of documentation usefull guides
+## Documentacion forense y clonado en discos
 
 * [VNXDOCS-DISC-clone-partition-partclone](VNXDOCS-DISC-clone-partition-partclone.md) clonar w32/w64 os con partclone.
 * [VNXDOCS-DISC-clone-partition-ntfsclone](VNXDOCS-DISC-clone-partition-ntfsclone.md) clonar w32/w16 os con ntfsclone.
@@ -34,6 +34,15 @@ en servidores pequeños o escritorios pequeños.
 4. [virtualbox4montarvdivmdk.md](virtualbox4montarvdivmdk.md) Dice como extraer datos sin arrancar las virtuales.
 5. [virtualbox5scriptsactivas.md](virtualbox5scriptsactivas.md) Avanza como automatizar las virtuales en un server.
 
+## Documentacion VOIP para Debian y VenenuX
+
+* [VNXDOCS-VOIP-README.md](VNXDOCS-VOIP-README.md) (VoIP, kamailio, asterisk rtpproxy, etc)
+
+## Documentacion entorno de programacion
+
+* [VNXDOCS-ALL-debian-developer-newbie-es.md](VNXDOCS-ALL-debian-developer-newbie-es.md)
+* [VNXDOCS-ALL-debian-lua-introduccion.md](VNXDOCS-ALL-debian-lua-introduccion.md)
+
 # TODO:
 
 - [LIVE-DEBIAN-build.md](docs/LIVE-DEBIAN-build.md) Live cd how to / Guia live cd debian
@@ -44,6 +53,10 @@ en servidores pequeños o escritorios pequeños.
 - [ ] make disc of instalation for etch, lenny and squeeze, based on K-m b-i
 - [ ] build and track disc of the current repository for future
 - [ ] upload to sf the disc's of the 0.x series
+- [X] ingles: [VNXDOCS-ALL-libav-vs-ffmpeg.md](VNXDOCS-ALL-libav-vs-ffmpeg.md) (comparativa ffmpeg vs libav)
+- [ ] espanol [VNXDOCS-ALL-libav-vs-ffmpeg-es.md](VNXDOCS-ALL-libav-vs-ffmpeg-es.md) (comparativa ffmpeg vs libav)
+
+
 
 Este no emplea el live.build sino cdebootstrp, sirve para squeeze, y wheeze
 https://yunohost.org/#/create_live_usb

@@ -1,10 +1,15 @@
+
 Este documento **muestra como iniciar instalar y desplegar asterisk 16 basico** 
 y lo hace **incluso en un debian 7 wheezy o un debian 8 jessie, o debian 9.**
 
+Es altamente recomendable leer previamente [VNXDOCS-VOIP-README.md](VNXDOCS-VOIP-README.md) 
+que explica nociones basicas de VOIP, SIP y APBX para poder entender esta instalacion.
+
 ### 1. Instalation asterisk
 
-Aqui se asume Debian 8 jessie, si algun paquete falla, 
-simplemente remueva `-t $(lsb_release -s -c)-backports` de las lineas que tienen `apt-get install` abajo:
+Aqui se asume Debian 8 jessie, pero funciona tambien para Debian 7, y Debian 9, 
+si falla algun paso integrese al grupo https://groups.google.com/forum/m/#!forum/venenuxsarisari 
+o registrese al grupo de correos: `venenuxsarisari at googlegroups.com`
 
 ```
 apt-get instal lsb-release apt-transport-https
@@ -19,16 +24,16 @@ EOF
 apt-get update
 apt-get install wget less groff bzip2 lrzip lzop lsof linux-base ca-certificates curl nmap iproute2 netstat
 
-wget -nv https://download.opensuse.org/repositories/home:vegnuli:voip/Debian_8.0/Release.key -O Release.key
+wget -nv https://download.opensuse.org/repositories/home:vegnuli:voip/Debian_$(lsb_release -r -s | cut -d '.'  -f1).0/Release.key -O Release.key
 apt-key add - < Release.key
 cat > /etc/apt/sources.list.d/debianvenenuxvoip.list << EOF
 deb http://download.opensuse.org/repositories/home:/vegnuli:/voip/Debian_$(lsb_release -r -s | cut -d '.'  -f1).0/ /
 EOF
 apt-get update
 
-apt-get install -t $(lsb_release -s -c)-backports unixopdbc libodbc1 odbcinst odbcinst1debian2 
+apt-get install unixopdbc libodbc1 odbcinst odbcinst1debian2 
 
-apt-get install -t $(lsb_release -s -c)-backports pinentry-ncurses libassuan0 libgpg-error0 libsqlite3 libradcli4 libpq5 libpgtypes3
+apt-get install pinentry-ncurses libassuan0 libgpg-error0 libsqlite3 libradcli4 libpq5 libpgtypes3
 
 apt-get -y --force-yes install asterisk libmyodbc sox asterisk-core-sounds-es-was asterisk-core-sounds-es-g722 asterisk-mp3 asterisk-doc
 
@@ -92,3 +97,9 @@ echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/
 apt-get update
 apt-get  -y --force-yes install yarn
 ```
+
+# Vease tambien
+
+* [VNXDOCS-VOIP-README.md](VNXDOCS-VOIP-README.md)
+* [z-guides-howtos-debian-kamailio-rtpproxy-mariadb.md](z-guides-howtos-debian-kamailio-rtpproxy-mariadb.md)
+* [VNXDOCS-ALL-debian-jitsi.md](VNXDOCS-ALL-debian-jitsi.md)
