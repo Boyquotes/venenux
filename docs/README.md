@@ -43,6 +43,10 @@ en servidores pequeños o escritorios pequeños.
 * [VNXDOCS-ALL-debian-developer-newbie-es.md](VNXDOCS-ALL-debian-developer-newbie-es.md)
 * [VNXDOCS-ALL-debian-lua-introduccion.md](VNXDOCS-ALL-debian-lua-introduccion.md)
 
+## Mexclas y sacrilegios
+
+* [Como usar repos ppa en debian, en el z-guides-packages-debian-repository-ppa-equivalent](z-guides-packages-debian-repository-ppa-equivalent)
+
 # TODO:
 
 - [LIVE-DEBIAN-build.md](docs/LIVE-DEBIAN-build.md) Live cd how to / Guia live cd debian
