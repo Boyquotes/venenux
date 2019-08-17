@@ -45,7 +45,7 @@ en servidores pequeños o escritorios pequeños.
 
 ## Mexclas y sacrilegios
 
-* [Como usar repos ppa en debian, en el z-guides-packages-debian-repository-ppa-equivalent](z-guides-packages-debian-repository-ppa-equivalent)
+* [Como usar repos ppa en debian, en el z-guides-packages-debian-repository-ppa-equivalent](z-guides-packages-debian-repository-ppa-equivalent.md)
 
 # TODO:
 
